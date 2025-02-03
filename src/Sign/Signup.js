@@ -2,6 +2,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+const URL = "http://192.168.1.5:8080/api";
+ 
+
 function Signup() {
   const [formData, setFormData] = useState({
     email: "",
@@ -12,7 +15,7 @@ function Signup() {
 
   // 입력값이 변경될 때 formData 업데이트
   const handleChange = (e) => {
-    setFormData({
+    setFormData({ 
       ...formData,
       [e.target.name]: e.target.value,
     });
@@ -24,17 +27,24 @@ function Signup() {
 
     try {
       // 백엔드로 POST 요청
-      const response = await axios.post("http://localhost/api/user/signup", formData);
+      const response = await axios.post(`${URL}/users/signup`, formData);
 
       // 요청 성공
       console.log("회원가입 성공:", response.data);
       alert("회원가입이 완료되었습니다.");
 
     } catch (error) {
-      // 요청 실패
-      console.error("회원가입 실패:", error.response?.data || error.message);
+      if (error.response) {
+        console.error("회원가입 실패:", error.response.data);
+      } else if (error.request) {
+        console.error("회원가입 요청이 백엔드에 전달되지 않음:", error.request);
+      } else {
+        console.error("요청 설정 중 오류 발생:", error.message);
+      }
       alert("회원가입에 실패하였습니다.");
     }
+    
+
   };
 
   return (
@@ -45,8 +55,8 @@ function Signup() {
           <label>username:</label>
           <input
             type="text"
-            name="name"
-            value={formData.name}
+            name="username"
+            value={formData.username}
             onChange={handleChange}
             required
           />
@@ -55,8 +65,8 @@ function Signup() {
           <label>nickname:</label>
           <input
             type="text"
-            name="username"
-            value={formData.username}
+            name="nickname"
+            value={formData.nickname}
             onChange={handleChange}
             required
           />
