@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 
 
-const URL = "http://192.168.1.5:8080/api"; // 실제 백엔드 IP 주소
-// const URL = "http://localhost:8080/api";
+// const URL = "http://192.168.1.5:8080/api";
+const URL = "http://localhost:8080/api";
 
 
 function Login() {
