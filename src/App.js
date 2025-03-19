@@ -1,14 +1,13 @@
-import Signup from "./Sign/Signup.js";
-import Login from "./Login/Login.js";
+// App.js - 기본 화면을 회원가입(Signup) 페이지로 설정
+import React from "react";
+import Signup from "./pages/Signup";
 
-function App() {
+const App = () => {
   return (
     <div>
-      <h1>회원가입 & 로그인 페이지</h1>
-      <Signup />
-      <Login />
+      <Signup /> {/* 기본적으로 회원가입 페이지를 렌더링 */}
     </div>
   );
-}
+};
 
 export default App;

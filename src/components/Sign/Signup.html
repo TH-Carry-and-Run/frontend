@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko" translate="yes">
+<head>
+    <!-- 문자 인코딩을 UTF-8로 설정하여 한글이 깨지지 않도록 함 -->
+    <meta charset="UTF-8">
+    
+    <!-- 반응형 웹을 위해 뷰포트 설정, 화면 크기에 맞춰 조정됨 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- 웹 페이지 제목 설정 -->
+    <title>회원가입</title>   
+    
+    <input type="text" id="name" disabled> <!-- disabled 속성 제거 -->
+    <button type="button" id="submit" disabled>제출</button> <!-- disabled 속성 제거 -->
+
+    <!-- 외부 스타일시트 연결 -->
+    <link rel="stylesheet" href="Signup.css">
+</head>
+<body>
+    <div class="signup-container">
+        <h2>회원가입</h2>
+        <form id="signup-form">
+            
+            <!-- 이메일 입력 및 인증 (API 필요함) -->
+    <div class="form-group">
+        <label for="email">이메일 (아이디)</label>
+        <div class="input-with-button">
+            <input type="email" id="email" placeholder="아이디를 입력하세요">
+            <button type="button" id="checkIdBtn" class="btn-small">중복확인</button>
+        </div>
+        <p class="error-message" id="email-error"></p>
+    </div>
+
+<!-- 핸드폰 번호 입력 및 인증 -->
+<div class="form-group">
+    <label for="phone">핸드폰 번호</label>
+    <div class="input-with-button">
+        <input type="text" id="phone" placeholder="전화번호 입력">
+        <button type="button" id="phone-verify-btn">인증하기</button>
+    </div>
+    <p class="error-message" id="phone-error"></p>
+</div>
+
+            
+            <!-- 이메일 인증코드 -->
+            <div class="form-group" id="email-code-group" style="display:none;">
+                <label for="email-code">인증 코드</label>
+                <input type="text" id="email-code" placeholder="인증 코드를 입력하세요">
+                <p class="error-message" id="email-code-error"></p>
+            </div>
+            
+            <!-- 비밀번호 -->
+            <div class="form-group">
+                <label for="password">비밀번호</label>
+                <!-- type값으로 입력값 숨김처리 -->
+                <input type="password" id="password" placeholder="비밀번호 입력">
+            </div>
+            
+            <!-- 비밀번호 재확인 입력 -->
+            <div class="form-group">
+                <label for="pwCheck">비밀번호 재확인</label>
+                <input type="password" id="pwCheck" placeholder="비밀번호를 다시 입력하세요">
+                <p class="error-message" id="pwCheckError"></p>
+            </div>
+
+            <script>
+                document.getElementById("pwCheck").addEventListener("input", function() {
+                    const password = document.getElementById("password").value;
+                    const pwCheck = this.value;
+                    const errorMessage = document.getElementById("pwCheckError");
+
+                    if (pwCheck !== password) {
+                        errorMessage.textContent = "비밀번호가 일치하지 않습니다.";
+                    } else {
+                        errorMessage.textContent = ""; // 오류 메시지 제거
+                    }
+                });
+            </script>
+            <!-- 이름 -->
+            <div class="form-group">
+                <label for="name">이름</label>
+                <input type="text" id="name" placeholder="이름 입력">
+            </div>
+            
+            <div class="form-group">
+                <label>성별</label>
+                <div class="gender-selection">
+                    <input type="radio" id="male" name="gender" value="male">
+                    <label for="male" class="gender-button">남성</label>
+            
+                    <input type="radio" id="female" name="gender" value="female">
+                    <label for="female" class="gender-button">여성</label>
+                </div>
+            </div>
+            
+            
+            <!-- 생년월일 -->
+            <div class="form-group">
+                <label for="birthdate">생년월일</label>
+                <input type="date" id="birthdate">
+            </div>
+            
+            
+            <!-- 닉네임 -->
+            <div class="form-group">
+                <label for="nickname">닉네임</label>
+                <input type="text" id="nickname" placeholder="닉네임 입력">
+            </div>
+            
+            <!-- 최종 가입 버튼 -->
+            <button type="submit" id="signup-btn">가입하기</button>
+        </form>
+    </div>
+</body>
+</html>

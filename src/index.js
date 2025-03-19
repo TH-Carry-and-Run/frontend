@@ -1,9 +1,13 @@
+// index.js - React 애플리케이션의 진입점
 import React from "react";
-import ReactDOM from "react-dom";
-import App from "./App"; 
+import ReactDOM from "react-dom/client";
+import App from "./App";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+// React 애플리케이션을 'root'에 렌더링
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
   <React.StrictMode>
-    <App />  {/* 👈 App.js를 실행! */}
+    <App />
   </React.StrictMode>
 );
+;
