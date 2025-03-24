@@ -38,6 +38,30 @@
     font-size: 14px;
   }
   
+  .verification-code-container input {
+    opacity: 1 !important; /* 입력 필드를 완전히 보이게 설정 */
+    background-color: white !important; /* 배경색을 흰색으로 설정 */
+    border: 1px solid #ccc; /* 테두리 추가 */
+  }
+  
+  .verification-code-container input:disabled {
+    background-color: #f5f5f5; /* 비활성화된 입력칸 색상 */
+    cursor: not-allowed; /* 비활성화 시 커서 변경 */
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* 요소 간 간격 조정 */
+  }
+  
+  button {
+    background-color: yellow;
+    border: none;
+    padding: 8px;
+  }
+  
+  
   /* 버튼 스타일 */
   button {
     width: 100%;
