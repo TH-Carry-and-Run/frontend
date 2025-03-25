@@ -29,16 +29,11 @@ const Signup = () => {
     const [timer, setTimer] = useState(180); // 3분 타이머 (180초)
     const [isTimerRunning, setIsTimerRunning] = useState(false); // 타이머 실행 중인지 여부
     const [verificationCode, setVerificationCode] = useState(''); // 휴대폰 인증 코드
-    const [isCodeSent, setIsCodeSent] = useState(false); // 인증 코드 발송 여부
     const [emailVerificationCode, setEmailVerificationCode] = useState(''); // 이메일 인증 코드 입력값
     const [phoneVerificationCode, setPhoneVerificationCode] = useState(''); // 휴대폰 인증 코드 입력값
     const [isEmailCodeSent, setIsEmailCodeSent] = useState(false); // 이메일 인증 코드 발송되었는지 여부
     const [isPhoneCodeSent, setIsPhoneCodeSent] = useState(false); // 휴대폰 인증 코드 발송되었는지 여부
-    const [generatedEmailCode, setGeneratedEmailCode] = useState(""); // 서버에서 받은 실제 인증 코드 저장
-    const [generatedPhoneCode, setGeneratedPhoneCode] = useState(""); 
-    const [email, setEmail] = useState(""); // 사용자가 입력한 이메일 값
 
-  
 
   // 타이머 작동하면 1초마다 감소하는 로직
   useEffect(() => {
@@ -95,9 +90,7 @@ const Signup = () => {
 
       if (response.status === 202 || response.status === 202) {
         console.log("이메일 인증 코드 발송");
-        // setIsEmailCodeSent(true); // 인증 코드 입력 UI 표시
-        // setIsTimerRunning(true); 
-        // setTimer(180); // 3분 타이머 시작
+
       }
     } catch (error) {
       console.error("이메일 인증 실패:", error);
@@ -107,34 +100,34 @@ const Signup = () => {
 
 
   // 이메일 인증번호 검증 요청 (API 호출)
-const handleEmailCodeVerification = async () => {
-  if (!emailVerificationCode) {
-    setErrors({ ...errors, email: '인증 코드를 입력해주세요.' });
-    return;
-  }
-
-  try {
-    const response = await axios.post('http://192.168.1.10:8080/email/verify', {
-      email: formData.email,
-      code: emailVerificationCode,
-    });
-
-    if (response.status === 200 && response.data.data) {
-      setIsEmailVerified(true);
-      setIsTimerRunning(false);
-      alert("인증이 완료되었습니다!");
-    } else {
-      setErrors({ ...errors, email: '인증 코드가 올바르지 않습니다.' });
+  const handleEmailCodeVerification = async () => {
+    if (!emailVerificationCode) {
+      setErrors({ ...errors, email: '인증 코드를 입력해주세요.' });
+      return;
     }
-  } catch (error) {
-    console.error("이메일 인증 실패:", error);
-    alert("서버 오류 발생. 다시 시도해주세요.");
-  }
-};
 
-useEffect(() => {
-  console.log("isEmailCodeSent 변경됨:", isEmailCodeSent);
-}, [isEmailCodeSent]);
+    try {
+      const response = await axios.post('http://192.168.1.10:8080/email/verify', {
+        email: formData.email,
+        code: emailVerificationCode,
+      });
+
+      if (response.status === 200 && response.data.data) {
+        setIsEmailVerified(true);
+        setIsTimerRunning(false);
+        alert("인증이 완료되었습니다!");
+      } else {
+        setErrors({ ...errors, email: '인증 코드가 올바르지 않습니다.' });
+      }
+    } catch (error) {
+      console.error("이메일 인증 실패:", error);
+      alert("서버 오류 발생. 다시 시도해주세요.");
+    }
+  };
+
+  useEffect(() => {
+    console.log("isEmailCodeSent 변경됨:", isEmailCodeSent);
+  }, [isEmailCodeSent]);
 
     // '인증하기' 버튼 클릭 시 실행 (이메일 인증 코드 받아오기)
   const handleEmailVerify = () => {
@@ -167,53 +160,52 @@ useEffect(() => {
     }
   };
 
-
   // 휴대폰 인증 요청 (API 요청)
   const handlePhoneVerification = async () => {
+    console.log("휴대폰 인증 시작")
     if (!validatePhoneNumber(formData.phone)) {
       setErrors({ ...errors, phone: '올바른 형식의 휴대폰 번호를 입력해주세요.' });
       return;
     }
 
+    // 휴대폰 인증 요청을 서버에 보냄
     try {
-      console.log("휴대폰 인증 요청 중...");
-      // 휴대폰 인증 요청을 서버에 보냄
-      const response = await fetch('http://192.168.1.10:8080/sms/send', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone: formData.phone }), // 전화번호를 서버에 전달
+      const response = await axios.post('http://192.168.1.10:8080/sms/send', {
+        phoneNumber: formData.phone,
       });
+        console.log(response);
 
-      if (response.status === 202) {
-        setIsPhoneCodeSent(true); // 인증 코드 발송 완료
-        setIsTimerRunning(true); // 타이머 시작
-        setTimer(180); // 3분 타이머 시작
-        console.log("인증 코드 발송 완료!");
-      } else if (response.status === 409) {
-        setErrors({ ...errors, phone: '이미 가입된 휴대폰 번호입니다.' });
+      if (response.status === 202 || response.status === 202) {
+        console.log("휴대폰 인증 코드 발송");
+
       }
     } catch (error) {
       console.error("휴대폰 인증 실패:", error);
+      setErrors({ ...errors, phone: '서버 오류 발생. 다시 시도해주세요.'});
     }
   };
 
   // 휴대폰 인증번호 검증 요청 (API 호출)
   const handlePhoneCodeVerification = async () => {
-    if (!verificationCode) {
+    if (!phoneVerificationCode) {
       setErrors({ ...errors, phone: '인증 코드를 입력해주세요.' });
       return;
     }
 
     try {
-      console.log("입력된 인증 코드:", verificationCode);
-      const response = await fetch('http://192.168.1.10:8080/sms/verify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phoneNumber: formData.phone, code: verificationCode }),
+      console.log("검증 요청 전송:", {
+        phoneNumber: formData.phone,
+        code: phoneVerificationCode,
       });
 
-      if (response.status === 200) {
-        console.log("휴대폰 인증 완료!");
+      const response = await axios.post('http://192.168.1.10:8080/sms/verify', {
+        phoneNumber: formData.phone,
+        code: phoneVerificationCode.trim(), // 공백 제거; 공백있을 시 검증 실패 가능성
+      });
+
+      console.log("서버 응답:", response.data);
+
+      if (response.status === 200 && response.data === '인증 성공') {
         setIsPhoneVerified(true); // 휴대폰 인증 성공
         setIsTimerRunning(false); // 타이머 중지
         alert("휴대폰 인증이 완료되었습니다!");
@@ -221,49 +213,35 @@ useEffect(() => {
         setErrors({ ...errors, phone: '인증 코드가 올바르지 않습니다.' });
       }
     } catch (error) {
-      console.error("휴대폰 인증 검증 실패:", error);
+      console.error("이메일 인증 실패:", error);
+      alert("서버 오류 발생. 다시 시도해주세요.");
     }
   };
 
+  useEffect(() => {
+    console.log("isPhoneCodeSent 변경됨:", isPhoneCodeSent);
+  }, [isPhoneCodeSent]);
+
 // 로컬 테스트용: 휴대폰 인증 코드 생성 (실제 서비스에서는 서버에서 처리)
-const handlePhoneVerify = () => {
-  setIsPhoneCodeSent(true); // 인증 코드 입력칸과 버튼 표시
-  const generatedCode = "654321"; // 실제 환경에서는 서버에서 생성한 코드 사용
-  setGeneratedPhoneCode(generatedCode); // 생성된 코드 저장
-  alert(`휴대폰 인증 코드: ${generatedCode}`); // 실제 서비스에서는 사용자에게 SMS 발송
-};
+  const handlePhoneVerify = () => {
+    setIsPhoneCodeSent(true);
 
-// 로컬 테스트용: 입력한 코드 검증 (실제 서비스에서는 API 요청 필요)
-const handlePhoneCodeCheck = () => {
-  if (verificationCode === generatedPhoneCode) {
-    setIsPhoneVerified(true); // 인증 완료 상태 변경
-    alert("휴대폰 인증이 완료되었습니다.");
-  } else {
-    alert("인증 코드가 틀렸습니다. 다시 입력해주세요.");
-  }
-};
-
-  // 인증 코드 입력 처리
-  const handleVerificationCodeChange = (e) => {
-    setVerificationCode(e.target.value);
   };
 
   // 최종 회원가입 요청 (API 요청)
   const handleSignup = async () => {
+    console.log("회원가입 완료!")
+
     if (isEmailVerified && isPhoneVerified) {
       try {
         // 회원가입 요청을 서버에 보냄
-        const response = await fetch('http://192.168.1.10:8080/users/signup', { // 회원가입 API 엔드포인트
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: formData.email,
-            password: formData.password, // 비밀번호는 프론트에서만 검증 후 서버에 전송
-            phone: formData.phone,
-            name: formData.name,
-            gender: formData.gender,
-            birthdate: formData.birthdate,
-          }),
+        const response = await axios.post('http://192.168.1.10:8080/api/users/signup', {
+          email: formData.email,
+          password: formData.password,
+          username: formData.name, // 이름을 username으로 전달해야 함!
+          phoneNumber: formData.phone,
+          birthDate: formData.birthdate,
+          gender: formData.gender === "남성" ? "MALE" : "FEMALE"
         });
 
         if (response.status === 201) {
@@ -273,12 +251,12 @@ const handlePhoneCodeCheck = () => {
         }
       } catch (error) {
         console.error("회원가입 요청 실패:", error);
+        alert("회원가입 중 오류가 발생했습니다.");
       }
     } else {
       alert("이메일과 휴대폰 인증을 완료해주세요.");
     }
   };
-
 
   return (
     <div className="signup-container">
@@ -315,17 +293,26 @@ const handlePhoneCodeCheck = () => {
       <input type="password" placeholder="비밀번호 확인" value={formData.confirmPassword} onChange={handleConfirmPasswordChange} />
       {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
 
+      {/* 휴대폰 인증 */}
       <div className="phone-container">
-        <input type="text" placeholder="휴대폰 번호 (하이픈 없이)" value={formData.phone} onChange={handlePhoneChange} />
-        {!isPhoneVerified && <button onClick={handlePhoneVerification}>휴대폰 인증</button>}
+        <input type="text" placeholder="휴대폰 번호 (하이픈 없이)" value={formData.phone} disabled={isPhoneVerified} onChange={handlePhoneChange} />
+        <button onClick={handlePhoneVerification} disabled={isPhoneVerified}>휴대폰 인증</button>
+        <div style={{ marginTop: "10px" }}> {/* 휴대폰번호 입력칸과 간격 조정 */}
+          <input
+            type="text" placeholder="인증 코드 입력" value={phoneVerificationCode} onChange={(e) => setPhoneVerificationCode(e.target.value)} disabled={isPhoneVerified} // 인증 완료 시 입력 불가능
+            />
+          <button onClick={handlePhoneCodeVerification} disabled={isPhoneVerified}>코드 인증</button> 
+        </div>
+        {/* {!isPhoneVerified && <button onClick={handlePhoneVerification}>휴대폰 인증</button>} */}
       </div>
 
-      { isPhoneCodeSent && (
+      {/* { isPhoneCodeSent && (
         <div className="verification-code-container">
           <input type="text" placeholder="인증 코드를 입력하세요" value={verificationCode} onChange={handleVerificationCodeChange} />
           <button onClick={() => setIsPhoneVerified(true)}>인증 코드 인증</button>
         </div>
-      )}
+      )} */}
+
       {errors.phone && <span className="error-message">{errors.phone}</span>}
 
       <button className="signup-btn" onClick={handleSignup}>가입하기</button>
@@ -333,7 +320,5 @@ const handlePhoneCodeCheck = () => {
     </div>
   );
 };
-
-
 
 export default Signup;
