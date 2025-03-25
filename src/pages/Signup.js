@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Signup.css';
+import axios from 'axios';
+
 
 const Signup = () => {
   // 사용자 입력 데이터를 저장하는 상태 변수
@@ -78,91 +80,66 @@ const Signup = () => {
 
   // 이메일 인증 요청 (API 요청)
   const handleEmailVerification = async () => {
+    console.log("이메일 인증 시작")
+    // alert("1");
     if (!validateEmail(formData.email)) {
       setErrors({ ...errors, email: '올바른 이메일 형식이 아닙니다.' });
       return;
     }
-    //console.log("이메일 인증 버튼 클릭됨");
-    //console.log("입력된 인증 코드:", emailVerificationCode);
-    setIsEmailCodeSent(true); // 인증 코드 입력 UI 표시
-    setIsTimerRunning(true); 
-    setTimer(180); // 3분 타이머 시작
-
 
     try {
-      // 이메일 인증 요청을 서버에 보냄
-      const response = await fetch('http://192.168.1.10:8080/email/send', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: formData.email }), // 이메일 주소를 서버에 전달
+      const response = await axios.post('http://192.168.1.10:8080/email/send', {
+        email: formData.email,
       });
+      console.log(response);
 
-      if (response.status === 202) {
-        //console.log("이메일 인증 완료!");
-        setIsEmailVerified(true); // 이메일 인증 완료 처리
-
+      if (response.status === 202 || response.status === 202) {
+        console.log("이메일 인증 코드 발송");
+        // setIsEmailCodeSent(true); // 인증 코드 입력 UI 표시
+        // setIsTimerRunning(true); 
+        // setTimer(180); // 3분 타이머 시작
       }
     } catch (error) {
       console.error("이메일 인증 실패:", error);
+      setErrors({ ...errors, email: '서버 오류 발생. 다시 시도해주세요.' });
     }
   };
 
+
   // 이메일 인증번호 검증 요청 (API 호출)
 const handleEmailCodeVerification = async () => {
-  if (!validateEmail(formData.email)) {
-    setErrors({ ...errors, email: '올바른 이메일 형식이 아닙니다.' });
+  if (!emailVerificationCode) {
+    setErrors({ ...errors, email: '인증 코드를 입력해주세요.' });
     return;
   }
 
-  console.log("입력된 인증 코드:", emailVerificationCode);
-
-
   try {
-    const response = await fetch('http://192.168.1.10:8080/email/verify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: formData.email, code: emailVerificationCode }),
+    const response = await axios.post('http://192.168.1.10:8080/email/verify', {
+      email: formData.email,
+      code: emailVerificationCode,
     });
 
-    const data = await response.json(); // 응답을 JSON으로 변환
-    console.log("서버 응답:", data); // 서버 응답 확인
-    code: emailVerificationCode.trim()
-
-    // if (response.status === 202) {
-      if (response.ok && data.data) { 
-      console.log("이메일 인증 완료!");
-      setIsEmailVerified(true); // 이메일 인증 성공
-      setIsTimerRunning(false); // 타이머 중지
+    if (response.status === 200 && response.data.data) {
+      setIsEmailVerified(true);
+      setIsTimerRunning(false);
       alert("인증이 완료되었습니다!");
     } else {
       setErrors({ ...errors, email: '인증 코드가 올바르지 않습니다.' });
     }
   } catch (error) {
     console.error("이메일 인증 실패:", error);
-    alert("서버 오류 발생. 다시 시도해주세요.")
-
+    alert("서버 오류 발생. 다시 시도해주세요.");
   }
 };
+
+useEffect(() => {
+  console.log("isEmailCodeSent 변경됨:", isEmailCodeSent);
+}, [isEmailCodeSent]);
+
     // '인증하기' 버튼 클릭 시 실행 (이메일 인증 코드 받아오기)
-const handleEmailVerify = () => {
-  setIsEmailCodeSent(true); // 인증 코드 입력칸과 버튼 표시
-
-
-  // 인증 코드 생성 (6자리 랜덤 숫자)
-  const generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
-  setGeneratedEmailCode(generatedCode); // 생성된 코드 저장
-  alert(`이메일 인증 코드: ${generatedCode}`); // 실제 서비스에서는 사용자에게 이메일로 발송
-};
-
-    // '코드 인증' 버튼 클릭 시 실행 (사용자 입력 코드 검증)
-const handleCodeVerify = () => {
-  if (emailVerificationCode === generatedEmailCode) {
-    setIsEmailVerified(true); // 인증 완료 상태로 변경
-    alert("이메일 인증이 완료되었습니다.");
-  } else {
-    alert("인증 코드가 틀렸습니다. 다시 입력해주세요.");
-  }
-};
+  const handleEmailVerify = () => {
+    setIsEmailCodeSent(true); // 인증 코드 입력칸과 버튼 표시
+  };
 
   // 비밀번호 입력 시 유효성 검증
   const handlePasswordChange = (e) => {
@@ -201,7 +178,7 @@ const handleCodeVerify = () => {
     try {
       console.log("휴대폰 인증 요청 중...");
       // 휴대폰 인증 요청을 서버에 보냄
-      const response = await fetch('http://192.168.1.10:8080/sms/send', { // 휴대폰 인증 API 엔드포인트
+      const response = await fetch('http://192.168.1.10:8080/sms/send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phone: formData.phone }), // 전화번호를 서버에 전달
@@ -302,6 +279,7 @@ const handlePhoneCodeCheck = () => {
     }
   };
 
+
   return (
     <div className="signup-container">
       <h2>회원가입</h2>
@@ -315,20 +293,19 @@ const handlePhoneCodeCheck = () => {
 
       <input type="date" value={formData.birthdate} onChange={(e) => setFormData({ ...formData, birthdate: e.target.value })} />
 
-      <div className="email-container">
-        <input type="email" placeholder="이메일 입력" value={formData.email} disabled={isEmailVerified} onChange={handleEmailChange} />
-        {!isEmailVerified && <button onClick={handleEmailVerification} disabled={isEmailVerified}>이메일 인증</button>}
 
-          {/* 인증 코드 입력 UI (isEmailCodeSent가 true일 때만 표시) */}
-      {isEmailCodeSent && (
+      {/* 이메일 인증 */}
+      <div className="email-container">     
+        <input type="email" placeholder="이메일 입력" value={formData.email} disabled={isEmailVerified} onChange={handleEmailChange} />
+        <button onClick={handleEmailVerification} disabled={isEmailVerified}>이메일 인증</button>
         <div style={{ marginTop: "10px" }}> {/* 이메일 입력칸과 간격 조정 */}
           <input
             type="text" placeholder="인증 코드 입력" value={emailVerificationCode} onChange={(e) => setEmailVerificationCode(e.target.value)} disabled={isEmailVerified} // 인증 완료 시 입력 불가능
             />
-          <button onClick={handleCodeVerify} disabled={isEmailVerified}>코드 인증</button>
+          <button onClick={handleEmailCodeVerification} disabled={isEmailVerified}>코드 인증</button> 
+          {/* <button disabled={isEmailVerified}>코드 인증</button>  */}
         </div>
-      )}
-    </div>
+      </div>
  
       {errors.email && <span className="error-message">{errors.email}</span>}
 
@@ -342,7 +319,8 @@ const handlePhoneCodeCheck = () => {
         <input type="text" placeholder="휴대폰 번호 (하이픈 없이)" value={formData.phone} onChange={handlePhoneChange} />
         {!isPhoneVerified && <button onClick={handlePhoneVerification}>휴대폰 인증</button>}
       </div>
-      {isCodeSent && (
+
+      { isPhoneCodeSent && (
         <div className="verification-code-container">
           <input type="text" placeholder="인증 코드를 입력하세요" value={verificationCode} onChange={handleVerificationCodeChange} />
           <button onClick={() => setIsPhoneVerified(true)}>인증 코드 인증</button>
@@ -351,8 +329,11 @@ const handlePhoneCodeCheck = () => {
       {errors.phone && <span className="error-message">{errors.phone}</span>}
 
       <button className="signup-btn" onClick={handleSignup}>가입하기</button>
+
     </div>
   );
 };
+
+
 
 export default Signup;

@@ -87,9 +87,8 @@ const handleVerificationCodeChange = (e) => {
     console.log("이메일 인증 버튼 클릭됨");
 
     setIsEmailCodeSent(true); // UI 즉시 업데이트
-    //setTimeout(() => setIsEmailCodeSent(true), 0); // 강제 리렌더링
     setIsTimerRunning(true); 
-    setTimer(180); // 3분 타이머 시작
+    setTimer(180); // 3분 타이머
     
     // 실제 서비스에서는 서버에서 생성된 코드를 받아야 하지만, 여기서는 임시 코드 설정
     const tempCode = "123456"; // 예제용 (실제로는 백엔드에서 발급)
