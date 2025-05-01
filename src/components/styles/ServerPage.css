@@ -1,0 +1,271 @@
+/* 전체 페이지 레이아웃을 설정하는 클래스 */
+.server-page {
+  display: flex; /* flexbox로 레이아웃 구성 */
+  flex-direction: column; /* 세로 방향으로 요소들이 배치됨 */
+  height: 100vh; /* 페이지 높이를 100%로 설정 */
+  font-family: 'Pretendard', sans-serif; /* 폰트 지정 */
+  margin: 0; /* 기본 margin 제거 */
+  padding: 0; /* 기본 padding 제거 */
+}
+
+/* 상단 고정 헤더 */
+.header {
+  position: fixed; /* 헤더를 화면 상단에 고정 */
+  top: 0; /* 화면 상단에 위치 */
+  left: 0; /* 화면 왼쪽에 고정 */
+  right: 0; /* 화면 오른쪽에 고정 */
+  background-color: #b3becd; /* 배경색 설정 */
+  color: white; /* 글자색 흰색 */
+  display: flex; /* flexbox로 내부 요소들 배치 */
+  justify-content: space-between; /* 좌우로 공간을 균등하게 배치 */
+  align-items: center; /* 세로 중앙 정렬 */
+  padding: 12px 24px; /* 상하좌우 패딩 설정 */
+  z-index: 10; /* 다른 콘텐츠보다 위에 표시되도록 설정 */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 헤더 아래에 그림자 추가 */
+}
+
+/* 오른쪽 헤더 버튼들 */
+.hed-right {
+  display: flex; /* flexbox로 배치 */
+  flex-direction: row; /* 가로 방향으로 배치 */
+  gap: 12px; /* 버튼 사이 간격 설정 */
+  align-items: center; /* 세로 중앙 정렬 */
+}
+
+.hed-btn {
+  background: none; /* 배경 없애기 */
+  border: none; /* 테두리 없애기 */
+  color: white; /* 글자색 흰색 */
+  font-size: 1.2rem; /* 글자 크기 설정 */
+  cursor: pointer; /* 마우스 커서 손 모양으로 변경 */
+}
+
+.hed-left {
+  font-size: 1.5rem; /* 글자 크기 설정 */
+  font-weight: bold; /* 글자 두껍게 */
+}
+
+/* 본문 레이아웃 */
+.layout {
+  display: flex; /* flexbox로 레이아웃 구성 */
+  flex: 1; /* 남은 공간을 다 차지하도록 설정 */
+  margin-top: 60px; /* 헤더 공간을 확보하기 위해 위쪽 여백 설정 */
+  overflow: hidden; /* 내용이 넘치지 않도록 설정 */
+}
+
+/* 왼쪽 사이드바 */
+.sidebar {
+  width: 250px; /* 사이드바 너비 설정 */
+  background-color: #6f7c97; /* 배경색 설정 */
+  color: white; /* 글자색 흰색 */
+  padding: 20px; /* 상하좌우 패딩 설정 */
+  position: fixed; /* 사이드바 고정 */
+  top: 90px; /* 헤더 아래 위치 */
+  bottom: 0; /* 화면 하단까지 차지 */
+  left: 0; /* 화면 왼쪽에 고정 */
+  overflow-y: auto; /* 내용이 길어지면 스크롤 가능 */
+  z-index: 5; /* 콘텐츠보다 아래에 위치하도록 설정 */
+}
+
+/* 메인 콘텐츠 영역 */
+.main-content {
+  flex: 1; /* 남은 공간을 다 차지하도록 설정 */
+  margin-left: 400px; /* 사이드바 너비만큼 왼쪽으로 밀기 */
+  padding: 20px; /* 상하좌우 패딩 설정 */
+  background-color: #ffffff; /* 배경색 흰색 */
+  overflow-y: auto; /* 내용이 길어지면 스크롤 가능 */
+  position: relative; /* 상대 위치 설정 */
+  display: flex;
+  justify-content: center;  /* 콘텐츠를 가운데로 정렬 */
+}
+
+/* 검색 섹션 */
+.search-section {
+  display: flex; /* flexbox로 검색 부분 배치 */
+  align-items: center; /* 세로 중앙 정렬 */
+  margin-bottom: 1.2rem; /* 아래쪽 여백 설정 */
+}
+
+/* 검색 버튼 */
+.search-btn {
+  padding: 0.4rem 0.8rem;
+  background-color: #4CAF50; /* 버튼 배경색 */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.search-btn:hover {
+  background-color: #45a049; /* 호버 시 배경색 */
+}
+
+
+.search-section input {
+  flex: 1; /* 입력 필드가 가능한 공간을 다 차지하도록 설정 */
+  padding: 0.6rem; /* 상하좌우 패딩 설정 */
+  border: 1px solid #d1d5db; /* 테두리 설정 */
+  border-radius: 6px; /* 모서리 둥글게 */
+  margin-right: 0.8rem; /* 오른쪽 여백 설정 */
+}
+
+/* 서버 리스트 제목 영역 */
+.my-server {
+  margin-top: 2rem; /* 위쪽 여백 설정 */
+}
+
+/* 서버 카드 그리드 설정 */
+.server-grid {
+  display: grid; /* 그리드 레이아웃 설정 */
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 카드 너비가 자동으로 맞춰짐 */
+  gap: 16px; /* 카드 간격 설정 */
+  margin-top: 1.5rem; /* 위쪽 여백 설정 */
+}
+
+/* 각 서버 카드 */
+.server-card {
+  background-color: #f3f4f6; /* 카드 배경색 */
+  border-radius: 12px; /* 카드 모서리 둥글게 */
+  padding: 12px; /* 카드 안쪽 여백 설정 */
+  aspect-ratio: 1 / 1; /* 카드 비율을 정사각형으로 설정 */
+  position: relative; /* 상대 위치 설정 */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08); /* 카드에 그림자 추가 */
+  display: flex; /* flexbox로 카드 내부 요소들 배치 */
+  flex-direction: column; /* 세로 방향 배치 */
+  justify-content: space-between; /* 카드 내용이 고르게 배치되도록 설정 */
+  cursor: pointer; /* 마우스 커서 손 모양으로 변경 */
+  transition: transform 0.2s ease; /* 카드 호버 시 애니메이션 효과 */
+}
+
+.server-card:hover {
+  transform: translateY(-3px); /* 카드 호버 시 살짝 위로 올라가는 효과 */
+}
+
+/* + 버튼 전용 카드 */
+.server-card.add-card {
+  background-color: #e0e7ff; /* 배경색 설정 */
+  color: #3b82f6; /* 글자색 파란색 */
+  font-size: 2.5rem; /* 글자 크기 설정 */
+  align-items: center; /* 세로 중앙 정렬 */
+  justify-content: center; /* 가로 중앙 정렬 */
+  text-align: center; /* 텍스트 중앙 정렬 */
+}
+
+/* 서버 정보 텍스트 스타일 */
+.server-info {
+  font-size: 0.85rem; /* 글자 크기 설정 */
+  color: #374151; /* 글자 색 회색 */
+  line-height: 1.4; /* 줄 간격 설정 */
+}
+
+/* 서버 이름 강조 */
+.server-title {
+  font-weight: bold; /* 글자 두껍게 */
+  margin-bottom: 0.5rem; /* 아래쪽 여백 설정 */
+  color: #1f2937; /* 글자색 어두운 색 */
+}
+
+/* 삭제 아이콘 버튼 (쓰레기통) */
+.trash-btn {
+  position: absolute; /* 절대 위치 설정 */
+  top: 6px; /* 위쪽 여백 설정 */
+  right: 6px; /* 오른쪽 여백 설정 */
+  background: transparent; /* 배경 없애기 */
+  border: none; /* 테두리 없애기 */
+  font-size: 1rem; /* 글자 크기 설정 */
+  cursor: pointer; /* 마우스 커서 손 모양으로 변경 */
+  color: #ef4444; /* 글자색 빨간색 */
+}
+
+/* 모달 창 배경 */
+.modal {
+  position: fixed; /* 화면 고정 위치 */
+  top: 0; /* 화면 상단 */
+  left: 0; /* 화면 왼쪽 */
+  right: 0; /* 화면 오른쪽 */
+  bottom: 0; /* 화면 하단 */
+  background-color: rgba(0,0,0,0.5); /* 반투명 배경 */
+  display: flex; /* flexbox로 중앙 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
+  justify-content: center; /* 가로 중앙 정렬 */
+}
+
+/* 모달 내용 */
+.modal-content {
+  background: white; /* 배경색 흰색 */
+  padding: 1.5rem; /* 안쪽 여백 설정 */
+  border-radius: 8px; /* 모서리 둥글게 */
+  text-align: center; /* 텍스트 중앙 정렬 */
+  min-width: 300px; /* 최소 너비 설정 */
+}
+
+/* 모달 버튼들 */
+.modal-buttons button {
+  margin: 0.5rem; /* 버튼 간격 설정 */
+  padding: 0.5rem 1rem; /* 버튼 안쪽 여백 설정 */
+  cursor: pointer; /* 마우스 커서 손 모양으로 변경 */
+  border: none; /* 테두리 없애기 */
+  border-radius: 6px; /* 모서리 둥글게 */
+}
+
+.modal-buttons button:first-child {
+  background-color: #9ca3af; 
+  color: white; /* 글자색 흰색 */
+}
+
+.modal-buttons button:last-child {
+  background-color: #ef4444; /* 배경색 빨간색 */
+  color: white; /* 글자색 흰색 */
+}
+
+/* 서버 리스트 스타일 */
+.server-list {
+  list-style: none; /* 기본 리스트 스타일 제거 */
+  padding-left: 0; /* 왼쪽 여백 제거 */
+}
+
+/* 서버 항목 */
+.server-item {
+  display: flex; /* flexbox로 배치 */
+  align-items: center; /* 세로 중앙 정렬 */
+  margin-bottom: 0.5rem; /* 아래쪽 여백 설정 */
+}
+
+/* 서버 이름 */
+.server-name {
+  margin-right: 0.5rem; /* 오른쪽 여백 설정 */
+  font-weight: 500; /* 글자 두껍게 */
+}
+
+/* 서버 상태 */
+.server-status {
+  margin-right: 1rem; /* 오른쪽 여백 설정 */
+  color: #6b7280;
+}
+
+/* 삭제 버튼 */
+.delete-btn {
+  padding: 4px 10px; /* 버튼 크기 설정 */
+  border-radius: 4px; /* 모서리 둥글게 */
+  border: none; /* 테두리 없애기 */
+  background-color: #ef4444; /* 배경색 빨간색 */
+  color: white; /* 글자색 흰색 */
+  cursor: pointer; /* 마우스 커서 손 모양으로 변경 */
+  font-size: 0.9rem; /* 글자 크기 설정 */
+  transition: background-color 0.2s ease; /* 배경색 변화 애니메이션 */
+  position: absolute; /* 절대 위치 설정 */
+}
+
+.delete-btn:hover {
+  background-color: #dc2626; /* 호버 시 배경색 변화 */
+  position: absolute;
+  bottom: 8px; /* 하단 위치 설정 */
+  right: 8px; /* 오른쪽 위치 설정 */
+}
+
+/* .create-button {
+  padding: 0.2rem 0.5rem;
+  width: 150px;    
+  align-self: center;  
+} */

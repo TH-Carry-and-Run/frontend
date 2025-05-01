@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/Signup.css';
+import "../components/styles/Signup.css";
 import axios from 'axios';
+import { useNavigate } from "react-router-dom"; // navigate 함수 가져오기
 
 
 const Signup = () => {
   // 사용자 입력 데이터를 저장하는 상태 변수
+  const navigate = useNavigate(); // navigate 함수 사용할 준비
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -90,6 +93,11 @@ const Signup = () => {
 
       if (response.status === 202 || response.status === 202) {
         console.log("이메일 인증 코드 발송");
+
+      } else if (response.status === 401) {
+        alert('이미 존재하는 이메일입니다.');
+      } else if (response.status === 402) {
+        alert('이미 인증이 진행중입니다.');
 
       }
     } catch (error) {
@@ -231,6 +239,7 @@ const Signup = () => {
   // 최종 회원가입 요청 (API 요청)
   const handleSignup = async () => {
     console.log("회원가입 완료!")
+    navigate('/main'); // 메인 페이지 라우트 경로
 
     if (isEmailVerified && isPhoneVerified) {
       try {
@@ -258,6 +267,11 @@ const Signup = () => {
     }
   };
 
+  const onClickConfirmButton = () => {
+    alert("회원가입이 완료되었습니다.");
+    navigate("/login"); // 회원가입 완료 후 로그인 페이지로 이동
+  };
+  
   return (
     <div className="signup-container">
       <h2>회원가입</h2>

@@ -16,3 +16,7 @@ export const validateForm = async (id, formData) => {
     body: JSON.stringify({ user: { [id]: formData[id] } }),
   });
 };
+
+export const auth = () => {
+  return !!localStorage.getItem('token'); // 로그인 되어 있으면 true
+};

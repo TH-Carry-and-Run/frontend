@@ -1,0 +1,51 @@
+.main-wrapper {
+  padding-top: 60px; /* Navbar 높이만큼 위에 여백 */
+}
+
+.main-content {
+  padding: 20px;
+}
+
+.banner {
+  background-color: #f0f4ff;
+  padding: 40px 20px;
+  text-align: center;
+  border-radius: 12px;
+  margin: 25px auto;
+  width: 90%;
+}
+
+.banner h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.banner p {
+  font-size: 16px;
+  color: #555;
+}
+
+.button-section {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 30px 20px;
+}
+
+.button-card {
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 20px 40px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.button-card:hover {
+  background-color: #f0f4ff;
+  border-color: #a0c1ff;
+  transform: translateY(-3px);
+}

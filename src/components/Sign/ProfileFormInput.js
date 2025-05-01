@@ -1,7 +1,7 @@
 // ProfileFormInput.js - 회원가입 폼 입력 필드 컴포넌트
 import React from 'react';
 
-import { validateForm } from '../../../api/auth';
+import { validateForm } from '../../utils/userApi';
 
 const ProfileFormInput = ({ id, label, formData, setFormData, error, setError, inputProps = {} }) => {
   // 입력값 변경 시 상태 업데이트
