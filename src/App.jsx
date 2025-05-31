@@ -25,7 +25,7 @@ function App () {
         <Route path="/login" element={<Login />} />
         <Route path="/main" element={<Mainpage />} />
 
-
+ㅛ
         {/* 보호된 페이지 */}
         <Route
           path="/serverpage"
