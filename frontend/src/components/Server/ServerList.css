@@ -1,0 +1,77 @@
+.server-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.server-card {
+  background-color: #fff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 16px;
+  width: 230px;
+  min-height: 210px;
+  padding: 1.3rem 1rem 1.3rem 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+  transition: box-shadow 0.2s;
+}
+
+.server-card:hover {
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+.add-card {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  background-color: #e0f2fe;
+  color: #0284c7;
+  font-size: 2.4rem;
+  font-weight: bold;
+  cursor: pointer;
+  min-height: 210px;
+  border: 2px dashed #7dd3fc;
+  transition: background 0.18s;
+}
+
+.add-card:hover {
+  background-color: #bae6fd;
+}
+
+.trash-btn {
+  background: none;
+  border: none;
+  position: absolute;
+  right: 1.0rem;
+  top: 1.0rem;
+  cursor: pointer;
+  color: #e11d48;
+  font-size: 1.15rem;
+  transition: color 0.15s;
+}
+
+.trash-btn:hover {
+  color: #be123c;
+}
+
+.server-info {
+  margin-top: 0.5rem;
+}
+
+.server-title {
+  font-size: 1.18rem;
+  font-weight: 600;
+  color: #0369a1;
+  margin-bottom: 0.6rem;
+  letter-spacing: -0.5px;
+}
+
+.server-info > div {
+  font-size: 0.98rem;
+  margin-bottom: 0.22rem;
+  color: #334155;
+}

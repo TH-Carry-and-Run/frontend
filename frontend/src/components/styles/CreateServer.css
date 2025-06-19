@@ -1,0 +1,128 @@
+.create-server-container {
+    max-width: 900px;
+    margin: 130px auto;
+    padding: 120px;
+    width: 90%; 
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    font-family: sans-serif;
+    background-color: #fff;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .title {
+    text-align: center;
+    font-size: 50px;
+    margin-bottom: 50px;
+    font-weight: bold;
+  }
+  
+  /* 섹션 박스 공통 스타일 */
+  .section-box {
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 55px;
+    margin-bottom: 30px;
+    background-color: #fdfdfd;
+    width: 600px; 
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  /* 입력 공통 */
+  .input-box {
+    margin-bottom: 30px;
+  }
+  
+  .input-box label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  .input-box input,
+  .input-box select {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 17px;
+  }
+  
+  /* OS/버전 선택 */
+  .os-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .version-dropdown {
+    position: relative;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #ffffff;
+    font-size: 16px;
+  }
+  
+  .options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    display: none;
+    z-index: 10;
+    margin-top: 5px;
+  }
+  
+  .options.show {
+    display: block;
+  }
+  
+  .options div {
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .options div:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .button-group {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 40px;
+    cursor: pointer; /* 클릭 가능한 버튼으로 표시 */
+  }
+  
+  .create-btn,
+  .cancel-btn {
+    padding: 6px 14px;
+    font-size: 14px;
+    max-width: 620px;
+    white-space: nowrap;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .create-btn {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .cancel-btn {
+    background-color: #f44336;
+    color: white;
+  }
+  

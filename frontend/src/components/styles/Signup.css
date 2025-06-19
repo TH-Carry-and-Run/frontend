@@ -1,0 +1,133 @@
+/* 회원가입 컨테이너 중앙 정렬 및 크기 조정 */
+.signup-container {
+    width: 450px;
+    margin: 100px auto; /* 중앙 정렬 및 아래로 내리기 */
+    background-color: white;
+    padding: 70px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* 입력칸 크기 및 간격 조정 */
+  input {
+    width: 100%;
+    padding: 12px;
+    margin: 12px 0; /* 입력칸 사이 공간을 넓게 */
+    border: 1px solid #0000004d;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  /* 이메일 & 휴대폰 인증 버튼을 입력칸과 동일한 크기로 조정 */
+  .email-container,
+  .phone-container {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+  }
+  
+  .email-container input,
+  .phone-container input {
+    flex: 4; /* 입력칸을 동일한 비율로 조정 */
+  }
+  
+  .email-container button,
+  .phone-container button {
+    width: 130px; /* 버튼 크기를 조정하여 입력칸과 정렬 */
+    padding: 10px !important;
+    font-size: 14px;
+  }
+  
+  .verification-code-container input {
+    opacity: 1 !important; /* 입력 필드를 완전히 보이게 설정 */
+    background-color: white !important; /* 배경색을 흰색으로 설정 */
+    border: 1px solid #ccc; /* 테두리 추가 */
+  }
+  
+  .verification-code-container input:disabled {
+    background-color: #f5f5f5; /* 비활성화된 입력칸 색상 */
+    cursor: not-allowed; /* 비활성화 시 커서 변경 */
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* 요소 간 간격 조정 */
+  }
+  
+  button {
+    background-color: yellow;
+    border: none;
+    padding: 8px;
+  }
+  
+  
+  /* 버튼 스타일 */
+  button {
+    width: 100%;
+    padding: 13px !important;
+    background-color: #fff12d;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+  }
+  
+  button:hover {
+    background-color: #26240238;
+  }
+  
+  /* 오류 메시지 */
+  .error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: -5px;
+    margin-bottom: 10px;
+  }
+  
+  /* 타이머 스타일 */
+  .timer {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
+  /* 성별 선택 버튼 컨테이너 (양옆 배치) */
+  .gender-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  
+  /* 성별 버튼 크기 조정 */
+  .gender-container button {
+    flex: 1;
+    padding: 12px;
+    background-color: #00000027;
+    border: 1px solid #ccc;
+    font-size: 14px;
+  }
+  
+  /* 성별 버튼 선택 시 스타일 변경 */
+  .gender-container .selected {
+    background-color: #fff12d;
+    color: rgb(0, 0, 0);
+    border: none;
+  }
+  
+  /* 가입하기 버튼 */
+  .signup-btn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 20px;
+    background-color: #fff12d;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .signup-btn:hover {
+    background-color: #ffab2d;
+  }
+  
