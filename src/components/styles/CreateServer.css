@@ -1,12 +1,15 @@
 .create-server-container {
-    max-width: 400px;
+    max-width: 900px;
     margin: 130px auto;
     padding: 120px;
+    width: 90%; 
     border: 1px solid #ddd;
     border-radius: 20px;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
     font-family: sans-serif;
     background-color: #fff;
+    margin-left: auto;
+    margin-right: auto;
   }
   
   .title {
@@ -23,6 +26,9 @@
     padding: 55px;
     margin-bottom: 30px;
     background-color: #fdfdfd;
+    width: 600px; 
+    margin-left: auto;
+    margin-right: auto;
   }
   
   /* 입력 공통 */
@@ -101,11 +107,13 @@
   .cancel-btn {
     padding: 6px 14px;
     font-size: 14px;
-    max-width: 120px;
+    max-width: 620px;
     white-space: nowrap;
     border: none;
     border-radius: 8px;
     cursor: pointer;
+    margin-left: auto;
+    margin-right: auto;
   }
   
   .create-btn {

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom'; // 페이지 이동을 위한 Link import
-import axios from "axios";
+// import axios from "axios";
 import "../components/styles/Login.css";
+import axiosInstance from "../utils/axiosInstance";
+
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -32,30 +34,38 @@ export default function Login() {
   
   const onClickConfirmButton = async () => {
     try {
-      const response = await axios.post("http://192.168.1.19:8080/api/users/login", {
-        email,
-        password,
-      },
-      {
-        withCredentials: true, // 쿠키를 포함하여 요청
-      });
-
+      const response = await axiosInstance.post(`/api/users/login`, { email, password }, { withCredentials: false });
+      
       console.log(response);
+      console.log(response.headers);
+      console.log(response.headers['authorization']);
 
-      if (response.data.message === "로그인 성공") {
+      const token = response.headers['authorization'] 
+      ? response.headers['authorization'].replace('Bearer ', '')
+      : null;
 
-        alert("로그인이 완료되었습니다.");
+      if (token) {
+        // 토큰 저장만
+        localStorage.setItem('accessToken', token);
+        alert("로그인 성공!");
         navigate('/main');
-        
       } else {
-        alert("로그인 실패: " + response.data.message);
+        alert("로그인 실패");
       }
     } catch (error) {
       alert("서버 오류 또는 로그인 실패");
-      console.error("로그인 에러:", error);
     }
   };
   
+  
+//   const token = localStorage.getItem('accessToken');
+//     const response = await axios.get(`${BACKEND_IP}:${BACKEND_PORT}}/api/protected-data`, {
+//     headers: {
+//     Authorization: `Bearer ${token}`
+//   }
+// });
+
+
   useEffect(() => {
     if (emailValid && pwValid) {
       setNotAllow(false);

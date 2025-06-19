@@ -1,49 +1,80 @@
 // CreateServer.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import '../components/styles/CreateServer.css';
 import ServerLoading from "../components/Server/ServerLoading";
 import CreateServerForm from "../components/Server/CreateServerForm";
+import axiosInstance from '../utils/axiosInstance';
 
-const CreateServer = () => {
+const CreateServer = ({ showToast }) => {
+    
     const navigate = useNavigate();
     const [serverName, setServerName] = useState("");
     const [os, setOs] = useState("Ubuntu");
     const [version, setVersion] = useState("");
     const [showVersionOptions, setShowVersionOptions] = useState(false);
-    const [ttl, setTtl] = useState("");
+    // const [ttl, setTtl] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [successUrl, setSuccessUrl] = useState(null); // 서버 성공시 저장할 preSignedUrl
 
     const handleCreate = async () => {
-        if (!serverName || !version || !ttl) {
-            alert("서버 이름을 입력해주세요 (예: TCAR의 서버)");
+        if (!serverName) {
+            showToast("서버 이름을 입력해주세요.");
             return;
         }
+        if (!version) {
+            showToast("운영체제 버전을 선택해주세요.");
+            return;
+        }
+        // if (!ttl) {
+        //     showToast("TTL을 선택해주세요.");
+        //     return;
+        // }
 
         const payload = {
             os: os,
             version: version,
-            // os_version: `${os} ${version}`
+            // ttl
         };
         
         setIsLoading(true); // 로딩 화면 표시
 
         try {
-
-            const response = await axios.post("http://192.168.1.19:8080/api/container/create", payload);
+            const response = await axiosInstance.post("/api/container/create", payload);
             console.log("서버 생성 성공:", response.data);
-            alert("서버가 성공적으로 생성되었습니다!");
+            showToast("서버가 성공적으로 생성되었습니다!");
             navigate("/server-page");
 
-            const preSignedUrl = response.data?.preSignedUrl;
-            if (preSignedUrl) {
-              setSuccessUrl(preSignedUrl); // 성공시 저장
+            // 단일 URL일 수도, 여러 개일 수도 있으니 둘 다 대응
+            // const urls = response.data?.presignedUrls || response.data?.presignedUrl
+            //     ? (Array.isArray(response.data.presignedUrls) ? response.data.presignedUrls : [response.data.presignedUrl])
+            //     : [];
+
+
+            let urls = [];
+            if (Array.isArray(response.data?.presignedUrls)) {
+                urls = response.data.presignedUrls;
+            } else if (response.data?.presignedUrl) {
+                urls = [response.data.presignedUrl];
+            }
+            
+
+            if (urls.length > 0) {
+                showToast("서버가 성공적으로 생성되었습니다!");
+                // 각각 새 창(탭)으로 띄우기
+                urls.forEach(url => {
+                    window.open(url, "_blank");
+                });
+                // 서버 리스트로 이동
+                setTimeout(() => navigate("/serverpage"), 1500);
+            } else {
+                showToast("presigned URL을 받지 못했습니다.");
             }
         } catch (error) {
             console.error("서버 생성 실패:", error);
-            alert("서버 생성 중 오류가 발생했습니다.");
+            showToast("서버 생성 중 오류가 발생했습니다.");
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -89,7 +120,7 @@ const CreateServer = () => {
                         >
                             {version || "버전 선택"}
                             <div className={`options ${showVersionOptions ? "show" : ""}`}>
-                                {["20.04 LTS", "22.04 LTS", "23.10"].map((v) => (
+                                {["20.04", "22.04"].map((v) => (
                                     <div
                                         key={v}
                                         onClick={() => {
@@ -107,7 +138,7 @@ const CreateServer = () => {
             </div>
 
             {/* TTL 설정 */}
-            <div className="section-box">
+            {/* <div className="section-box">
                 <div className="input-box">
                     <label>TTL 설정</label>
                     <select value={ttl} onChange={(e) => setTtl(e.target.value)}>
@@ -118,7 +149,7 @@ const CreateServer = () => {
                         <option value="24시간">24시간</option>
                     </select>
                 </div>
-            </div>
+            </div> */}
 
             {/* 버튼 */}
             <div className="button-group">
@@ -128,5 +159,6 @@ const CreateServer = () => {
         </div>
     );
 };
+
 
 export default CreateServer;

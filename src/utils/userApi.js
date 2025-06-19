@@ -18,5 +18,5 @@ export const validateForm = async (id, formData) => {
 };
 
 export const auth = () => {
-  return !!localStorage.getItem('token'); // 로그인 되어 있으면 true
+  return !!localStorage.getItem('accessToken'); // 로그인 되어 있으면 true
 };

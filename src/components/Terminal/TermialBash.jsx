@@ -3,7 +3,8 @@ import { Terminal } from "@xterm/xterm";
 import "@xterm/xterm/css/xterm.css";
 import { FitAddon } from 'xterm-addon-fit';
 import axios from 'axios';
-// import './TerminalOverlay.css';
+import './TerminalOverlay.css';
+import { toast } from 'react-toastify';
 
 const TerminalComponent = () => {
     const terminalRef = useRef(null);
@@ -65,14 +66,36 @@ const TerminalComponent = () => {
             };
 
             socketRef.current.onmessage = event => {
-                console.log("RECV:", event.data);
-                let data = event.data;
+                // 1. JSON 파싱
+                let msgObj;
+                try {
+                    msgObj = JSON.parse(event.data);
+                } catch(e) {
+                    // 혹시 서버에서 JSON이 아닌 메시지가 올 수도 있으니, fallback
+                    console.log("RECV(Non-JSON):", event.data);
+                    term.current.write(event.data);
+                    return;
+                }
             
-                // \n만 있는 줄바꿈을 \r\n으로 보정
-                data = data.replace(/\n(?!\r)/g, '\n\r');
+                console.log("RECV(JSON):", msgObj);
             
-                term.current.write(data);
+                // 2. 타입별 처리
+                if(msgObj.type === "INPUT") {
+                    // \n만 있는 줄바꿈을 \r\n으로 보정
+                    let output = msgObj.message.replace(/\n(?!\r)/g, '\n\r');
+                    term.current.write(output);
+                } else if(msgObj.type === "NOTICE" || msgObj.type === "notice") {
+                    let output = msgObj.message.replace(/\n(?!\r)/g, '\n\r');
+                    toast.info(output);  // ← 여기만 바꿔줌!
+                } else if(msgObj.type === "WARNING" || msgObj.type === "warning") {
+                    let output = msgObj.message.replace(/\n(?!\r)/g, '\n\r');
+                    toast.warn(output);
+                } else {
+                    // 기타 타입: 필요시 확장
+                    console.log("알 수 없는 메시지 타입:", msgObj);
+                }
             };
+            
             
 
             socketRef.current.onclose = () => {
@@ -96,7 +119,7 @@ const TerminalComponent = () => {
             {showOverlay && (
                 <div className="overlay">
                     <div className="modal">
-                    <h2>❌ 접근할 수 없습니다</h2>
+                    <h2>접근할 수 없습니다</h2>
                     <button onClick={handleClose}>나가기</button>
                     </div>
                 </div>

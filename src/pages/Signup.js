@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import "../components/styles/Signup.css";
-import axios from 'axios';
+import axiosInstance from "../utils/axiosInstance";
 import { useNavigate } from "react-router-dom"; // navigate 함수 가져오기
 
 
@@ -86,7 +86,7 @@ const Signup = () => {
     }
 
     try {
-      const response = await axios.post('http://192.168.1.10:8080/email/send', {
+      const response = await axiosInstance.post('/email/send', {
         email: formData.email,
       });
       console.log(response);
@@ -115,7 +115,7 @@ const Signup = () => {
     }
 
     try {
-      const response = await axios.post('http://192.168.1.10:8080/email/verify', {
+      const response = await axiosInstance.post('/email/verify', {
         email: formData.email,
         code: emailVerificationCode,
       });
@@ -178,7 +178,7 @@ const Signup = () => {
 
     // 휴대폰 인증 요청을 서버에 보냄
     try {
-      const response = await axios.post('http://192.168.1.10:8080/sms/send', {
+      const response = await axiosInstance.post('/sms/send', {
         phoneNumber: formData.phone,
       });
         console.log(response);
@@ -206,7 +206,7 @@ const Signup = () => {
         code: phoneVerificationCode,
       });
 
-      const response = await axios.post('http://192.168.1.10:8080/sms/verify', {
+      const response = await axiosInstance.post('/sms/verify', {
         phoneNumber: formData.phone,
         code: phoneVerificationCode.trim(), // 공백 제거; 공백있을 시 검증 실패 가능성
       });
@@ -244,17 +244,19 @@ const Signup = () => {
     if (isEmailVerified && isPhoneVerified) {
       try {
         // 회원가입 요청을 서버에 보냄
-        const response = await axios.post('http://192.168.1.10:8080/api/users/signup', {
+        const response = await axiosInstance.post('/api/users/signup', {
           email: formData.email,
           password: formData.password,
-          username: formData.name, // 이름을 username으로 전달해야 함!
+          username: formData.name, // 이름을 username으로 전달해야 함
           phoneNumber: formData.phone,
           birthDate: formData.birthdate,
           gender: formData.gender === "남성" ? "MALE" : "FEMALE"
         });
 
-        if (response.status === 201) {
+        if (response.status === 201 && response.data.token) {
+          localStorage.setItem('accessToken', response.data.token); // 자동 로그인
           alert("회원가입이 완료되었습니다.");
+          navigate('/main')
         } else {
           console.error("회원가입 실패:", response);
         }

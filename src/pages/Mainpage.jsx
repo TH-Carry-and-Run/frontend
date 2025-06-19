@@ -7,16 +7,18 @@ import { FaInfoCircle, FaComments, FaQuestionCircle, FaServer, FaBullhorn } from
 
 function MainPage() {
   const navigate = useNavigate();
-  const isLoggedIn = !!localStorage.getItem("token");
+  const isLoggedIn = !!localStorage.getItem("accessToken");
+  console.log(isLoggedIn);
 
   const onClickServerPage = () => {
-    if (!isLoggedIn) {
-      alert("로그인이 필요한 서비스입니다.");
-      navigate("/login");
-    } else {
+    // if (!isLoggedIn) {
+    //   alert("로그인이 필요한 서비스입니다.");
+    //   navigate("/login");
+    // } else {
 
+    //   navigate("/ServerPage"); // 원하는 경로로 수정
       navigate("/ServerPage"); // 원하는 경로로 수정
-    }
+    // }
   };
 
   return (

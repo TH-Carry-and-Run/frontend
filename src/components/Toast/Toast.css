@@ -1,0 +1,27 @@
+/* src/components/Toast/Toast.css */
+.custom-toast {
+    position: fixed;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 240px;
+    max-width: 80vw;
+    background: rgba(50, 50, 50, 0.98);
+    color: #fff;
+    padding: 16px 32px;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.13);
+    font-size: 1.1rem;
+    z-index: 10000;
+    animation: fadein 0.4s, fadeout 0.5s 2.2s;
+  }
+  
+  @keyframes fadein {
+    from { opacity: 0; top: 30px;}
+    to { opacity: 1; top: 50px;}
+  }
+  @keyframes fadeout {
+    from { opacity: 1;}
+    to { opacity: 0;}
+  }
+  
