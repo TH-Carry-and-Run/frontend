@@ -1,0 +1,8 @@
+.post-list-table-header {
+    background-color: #f8f9fa;
+  }
+  
+  .post-list-table-header .MuiTableCell-root {
+    font-weight: 600;
+    font-size: 0.9rem;
+  }

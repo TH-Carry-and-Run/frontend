@@ -1,0 +1,66 @@
+/* Terminal.css에 정의된 색상 변수를 사용하여 테마 통일 */
+:root {
+    --bg-dark: #1e1e2e;
+    --bg-medium: #27293d;
+    --bg-light: #3b3e58;
+    --text-primary: #cdd6f4;
+    --accent-mauve: #cba6f7;
+}
+
+/* 화면 전체를 덮는 반투명 검은색 배경 */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px); /* 뒷배경을 흐리게 만듦 */
+}
+
+/* 팝업창 스타일 */
+.modal {
+    background-color: var(--bg-medium);
+    padding: 30px 40px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid var(--bg-light);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    /* 애니메이션 효과 */
+    opacity: 0;
+    transform: scale(0.9);
+    animation: modal-fade-in 0.3s ease-out forwards;
+}
+
+.modal h2 {
+    margin: 0 0 20px 0;
+    color: var(--text-primary);
+}
+
+.modal button {
+    padding: 10px 25px;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--accent-mauve);
+    color: var(--bg-dark);
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.modal button:hover {
+    background-color: #e7c7ff; /* 호버 시 밝은 색상 */
+}
+
+/* 모달 애니메이션 정의 */
+@keyframes modal-fade-in {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

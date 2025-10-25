@@ -1,0 +1,10 @@
+.comment-form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 16px 0;
+  }
+  
+  .comment-submit-button {
+    align-self: flex-end; /* 버튼을 오른쪽으로 정렬 */
+  }

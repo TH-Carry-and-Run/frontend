@@ -1,0 +1,22 @@
+.comment-item {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  
+  .comment-content {
+    padding: 8px 0;
+    white-space: pre-wrap; /* 줄바꿈 인식 */
+    line-height: 1.6;
+  }
+  
+  .comment-actions {
+    /* ListItem이 hover 상태일 때만 버튼이 보이도록 설정 */
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+  }
+  
+  .comment-item:hover .comment-actions {
+    visibility: visible;
+    opacity: 1;
+  }

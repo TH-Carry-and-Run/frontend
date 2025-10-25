@@ -1,0 +1,6 @@
+/* 글 작성/수정 화면 */
+
+.post-editor-page-container {
+    max-width: 900px;
+    margin: 40px auto !important;
+  }

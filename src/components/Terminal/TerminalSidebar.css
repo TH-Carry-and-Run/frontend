@@ -1,0 +1,61 @@
+.terminal-sidebar {
+    width: 240px;
+    background-color: var(--bg-medium);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    border-right: 1px solid var(--bg-light);
+    transition: transform 0.3s ease-in-out, margin-left 0.3s ease-in-out;
+    transform: translateX(-100%);
+    margin-left: -240px;
+    flex-shrink: 0;
+  }
+  
+  .terminal-sidebar.open {
+    transform: translateX(0);
+    margin-left: 0;
+  }
+  
+  .project-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 1.1rem;
+  }
+  
+  .menu-icon {
+    cursor: pointer;
+    font-size: 1.2rem;
+  }
+  
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .nav-button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.2s, color 0.2s;
+  }
+  
+  .nav-button:hover {
+    background-color: var(--bg-light);
+    color: var(--text-primary);
+  }
+  
+  .nav-icon {
+    font-size: 1.2rem;
+    color: var(--accent-blue);
+  }  

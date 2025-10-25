@@ -1,164 +1,121 @@
-// CreateServer.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import '../components/styles/CreateServer.css';
-import ServerLoading from "../components/Server/ServerLoading";
-import CreateServerForm from "../components/Server/CreateServerForm";
-import axiosInstance from '../utils/axiosInstance';
+// ✨ CSS 경로는 그대로 유지합니다.
+import '../components/styles/CreateServer.css'; 
+// import ServerLoading from "../components/Server/ServerLoading.jsx"; // ✨ 여기서 로딩을 직접 보여주지 않으므로 주석 처리
+import axiosInstance from '../utils/axiosInstance'; // axiosInstance는 여전히 필요할 수 있으므로 유지 (혹은 나중에 ServerLoading으로 옮김)
+import { FaUbuntu, FaWindows, FaApple, FaLinux } from 'react-icons/fa';
+
+const osOptions = [
+    { name: "Ubuntu", icon: <FaUbuntu />, versions: ["22.04"] },
+    { name: "Windows", icon: <FaWindows />, versions: ["Server 2022", "Server 2019"] },
+    { name: "macOS", icon: <FaApple />, versions: ["Monterey", "Ventura"] },
+    { name: "CentOS", icon: <FaLinux />, versions: ["7", "8 Stream"] },
+];
 
 const CreateServer = ({ showToast }) => {
-    
     const navigate = useNavigate();
-    const [serverName, setServerName] = useState("");
-    const [os, setOs] = useState("Ubuntu");
-    const [version, setVersion] = useState("");
-    const [showVersionOptions, setShowVersionOptions] = useState(false);
-    // const [ttl, setTtl] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-    const [successUrl, setSuccessUrl] = useState(null); // 서버 성공시 저장할 preSignedUrl
+    const [selectedOs, setSelectedOs] = useState(null);
+    const [selectedVersion, setSelectedVersion] = useState("");
+    // const [isLoading, setIsLoading] = useState(false); // ✨ 로딩 상태 제거
 
-    const handleCreate = async () => {
-        if (!serverName) {
-            showToast("서버 이름을 입력해주세요.");
+    useEffect(() => {
+        if (selectedOs === "Ubuntu") {
+            setSelectedVersion("22.04");
+        } else {
+             const currentOs = osOptions.find(os => os.name === selectedOs);
+             if (currentOs && currentOs.versions.length > 0 && !currentOs.versions.includes(selectedVersion)) {
+                 setSelectedVersion(""); 
+             }
+        }
+    }, [selectedOs, selectedVersion]);
+
+    const handleCreate = () => { // ✨ async 제거
+        // --- 1. 입력값 유효성 검사 (기존과 동일) ---
+        if (!selectedOs || !selectedVersion) {
+            showToast("운영체제와 버전을 선택해주세요.", "warning");
             return;
         }
-        if (!version) {
-            showToast("운영체제 버전을 선택해주세요.");
-            return;
-        }
-        // if (!ttl) {
-        //     showToast("TTL을 선택해주세요.");
-        //     return;
-        // }
 
-        const payload = {
-            os: os,
-            version: version,
-            // ttl
+        // --- ✨ 2. setIsLoading(true) 코드 삭제 ---
+
+        // --- ✨ 3. API 요청 payload 준비 (이 정보는 로딩 페이지로 전달) ---
+        const creationData = { 
+            os: selectedOs, 
+            version: selectedVersion 
         };
-        
-        setIsLoading(true); // 로딩 화면 표시
 
-        try {
-            const response = await axiosInstance.post("/api/container/create", payload);
-            console.log("서버 생성 성공:", response.data);
-            showToast("서버가 성공적으로 생성되었습니다!");
-            navigate("/server-page");
+        // --- ✨ 4. API 호출 로직(try...catch 블록) 전체 삭제 ---
 
-            // 단일 URL일 수도, 여러 개일 수도 있으니 둘 다 대응
-            // const urls = response.data?.presignedUrls || response.data?.presignedUrl
-            //     ? (Array.isArray(response.data.presignedUrls) ? response.data.presignedUrls : [response.data.presignedUrl])
-            //     : [];
-
-
-            let urls = [];
-            if (Array.isArray(response.data?.presignedUrls)) {
-                urls = response.data.presignedUrls;
-            } else if (response.data?.presignedUrl) {
-                urls = [response.data.presignedUrl];
-            }
-            
-
-            if (urls.length > 0) {
-                showToast("서버가 성공적으로 생성되었습니다!");
-                // 각각 새 창(탭)으로 띄우기
-                urls.forEach(url => {
-                    window.open(url, "_blank");
-                });
-                // 서버 리스트로 이동
-                setTimeout(() => navigate("/serverpage"), 1500);
-            } else {
-                showToast("presigned URL을 받지 못했습니다.");
-            }
-        } catch (error) {
-            console.error("서버 생성 실패:", error);
-            showToast("서버 생성 중 오류가 발생했습니다.");
-        } finally {
-            setIsLoading(false);
-        }
+        // --- ✨ 5. '/server-loading' 경로로 이동하고, 생성 정보(creationData)를 state로 전달합니다. ---
+        // '/server-loading'은 App.jsx에서 ServerLoading 컴포넌트와 연결될 경로입니다.
+        navigate("/server-loading", { state: { serverData: creationData } }); 
     };
 
-    const handleCancel = () => {
-        navigate("/ServerPage");
-    };
+    // --- ✨ 6. if (isLoading) { ... } 블록 전체 삭제 ---
 
-    if (isLoading && !successUrl) {
-      return <ServerLoading />;
-  }
-
-  if (successUrl) {
-      return <CreateServerForm preSignedUrl={successUrl} />;
-  }
-
-
+    // 서버 생성 폼 UI 렌더링 부분 (항상 폼을 보여줌)
     return (
-        <div className="create-server-container">
-            <h1 className="title">서버 생성</h1>
+        <div className="create-server-page">
+            <div className="form-card">
+                <h1 className="title">새 서버 생성</h1>
+                <p className="subtitle">몇 단계만으로 간단하게 나만의 개발 환경을 구축하세요.</p>
 
-            {/* 서버 이름 입력 */}
-            <div className="section-box">
-                <div className="input-box">
-                    <label>서버 이름</label>
-                    <input
-                        type="text"
-                        value={serverName}
-                        onChange={(e) => setServerName(e.target.value)}
-                        placeholder="서버 이름을 입력하세요"
-                    />
-                </div>
-            </div>
-
-            {/* OS 및 버전 선택 */}
-            <div className="section-box">
-                <div className="input-box">
-                    <label>운영 체제 및 버전</label>
-                    <div className="os-selector">
-                        <span>Ubuntu</span>
-                        <div
-                            className="version-dropdown"
-                            onClick={() => setShowVersionOptions(!showVersionOptions)}
-                        >
-                            {version || "버전 선택"}
-                            <div className={`options ${showVersionOptions ? "show" : ""}`}>
-                                {["20.04", "22.04"].map((v) => (
-                                    <div
-                                        key={v}
-                                        onClick={() => {
-                                            setVersion(v);
-                                            setShowVersionOptions(false);
-                                        }}
-                                    >
-                                        {v}
-                                    </div>
-                                ))}
+                <div className="form-section">
+                    <h2 className="section-title">1. 운영체제(OS) 선택</h2> 
+                    <div className="os-grid">
+                        {osOptions.map((os) => (
+                            <div
+                                key={os.name}
+                                className={`os-card ${selectedOs === os.name ? "active" : ""}`}
+                                onClick={() => {
+                                    setSelectedOs(os.name);
+                                    if (os.name !== "Ubuntu") {
+                                        setSelectedVersion(""); 
+                                    }
+                                }}
+                            >
+                                <div className="os-icon">{os.icon}</div>
+                                <span className="os-name">{os.name}</span>
                             </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
-            </div>
+                
+                {selectedOs && (
+                    <div className="form-section version-section">
+                        <h2 className="section-title">2. 버전 선택</h2>
+                        <select
+                            className="version-select"
+                            value={selectedVersion}
+                            onChange={(e) => setSelectedVersion(e.target.value)}
+                            disabled={selectedOs === "Ubuntu"}
+                        >
+                            <option value="" disabled={selectedOs !== 'Ubuntu'}>
+                                {selectedOs === 'Ubuntu' ? '22.04 (고정)' : '버전을 선택하세요'}
+                            </option>
+                            {selectedOs !== 'Ubuntu' && 
+                             osOptions.find(os => os.name === selectedOs)?.versions.map(v => (
+                                <option key={v} value={v}>{v}</option>
+                             ))
+                            }
+                        </select>
+                    </div>
+                )}
 
-            {/* TTL 설정 */}
-            {/* <div className="section-box">
-                <div className="input-box">
-                    <label>TTL 설정</label>
-                    <select value={ttl} onChange={(e) => setTtl(e.target.value)}>
-                        <option value="">TTL을 선택하세요</option>
-                        <option value="1시간">1시간</option>
-                        <option value="2시간">2시간</option>
-                        <option value="6시간">6시간</option>
-                        <option value="24시간">24시간</option>
-                    </select>
+                <div className="button-group">
+                    <button className="cancel-btn" onClick={() => navigate("/serverpage")}>취소</button>
+                    <button 
+                        className="create-btn" 
+                        onClick={handleCreate}
+                        disabled={!selectedOs || !selectedVersion} 
+                    >
+                        서버 생성
+                    </button>
                 </div>
-            </div> */}
-
-            {/* 버튼 */}
-            <div className="button-group">
-                <button className="create-btn" onClick={handleCreate}>Create</button>
-                <button className="cancel-btn" onClick={handleCancel}>Cancel</button>
             </div>
         </div>
     );
 };
-
 
 export default CreateServer;

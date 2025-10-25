@@ -1,0 +1,215 @@
+/* --- 전체 페이지 및 색상 변수 (다른 페이지와 통일) --- */
+:root {
+    --primary-color: #4a6cf8;
+    --primary-hover-color: #3b57e0;
+    --danger-color: #dc3545;
+    --danger-hover-color: #c82333;
+    --bg-color: #f8f9fa;
+    --card-bg-color: #ffffff;
+    --border-color: #dee2e6;
+    --text-dark: #212529;
+    --text-light: #6c757d;
+  }
+  
+  .modify-page {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 60px 20px;
+    background-color: var(--bg-color);
+  }
+  
+  .form-card {
+    width: 100%;
+    max-width: 600px;
+    padding: 40px;
+    background-color: var(--card-bg-color);
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+    opacity: 0;
+    animation: fadeIn-up 0.6s ease-out forwards;
+  }
+  
+  .title {
+    text-align: center;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: 0 0 40px;
+  }
+  
+  /* --- 프로필 사진 섹션 --- */
+  .profile-picture-section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+  .picture-container {
+    position: relative;
+    width: 150px;
+    height: 150px;
+  }
+  .profile-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #fff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+  .camera-icon-label {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 40px;
+    height: 40px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: 2px solid white;
+    transition: background-color 0.2s ease;
+  }
+  .camera-icon-label:hover {
+    background-color: var(--primary-hover-color);
+  }
+  .camera-icon {
+    font-size: 1.2rem;
+  }
+  
+  /* --- 폼 섹션 스타일 --- */
+  .form-section {
+    margin-bottom: 30px;
+  }
+  .section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .input-group {
+    margin-bottom: 15px;
+  }
+  .input-group label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-light);
+    margin-bottom: 8px;
+  }
+  .input-group input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+  }
+  .input-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(74, 108, 248, 0.2);
+  }
+  .input-group input:disabled {
+    background-color: #f1f3f5;
+    color: var(--text-light);
+    cursor: not-allowed;
+  }
+
+  /* --- 성별 선택 버튼 스타일 --- */
+  .gender-select {
+    display: flex;
+    gap: 10px;
+  }
+  .gender-btn {
+    flex: 1;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: #fff;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .gender-btn.active {
+    background-color: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
+  }
+  
+  /* --- 버튼 그룹 스타일 --- */
+  .button-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+  }
+  .save-btn, .cancel-btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .save-btn {
+    background-color: var(--primary-color);
+    color: white;
+  }
+  .save-btn:hover {
+    background-color: var(--primary-hover-color);
+  }
+  .cancel-btn {
+    background-color: #6c757d;
+    color: white;
+  }
+  .cancel-btn:hover {
+    background-color: #5a6268;
+  }
+
+  /* --- 회원 탈퇴 섹션 스타일 --- */
+  .deactivation-section {
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--border-color);
+  }
+  .deactivation-text {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  .deactivate-btn {
+    width: auto;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: var(--danger-color);
+    color: white;
+    transition: background-color 0.2s ease;
+  }
+  .deactivate-btn:hover {
+    background-color: var(--danger-hover-color);
+  }
+  
+  /* --- 애니메이션 정의 --- */
+  @keyframes fadeIn-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }

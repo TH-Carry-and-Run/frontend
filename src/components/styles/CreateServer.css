@@ -1,128 +1,170 @@
-.create-server-container {
-    max-width: 900px;
-    margin: 130px auto;
-    padding: 120px;
-    width: 90%; 
-    border: 1px solid #ddd;
-    border-radius: 20px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-    font-family: sans-serif;
-    background-color: #fff;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
-  .title {
-    text-align: center;
-    font-size: 50px;
-    margin-bottom: 50px;
-    font-weight: bold;
-  }
-  
-  /* 섹션 박스 공통 스타일 */
-  .section-box {
-    border: 1px solid #ccc;
-    border-radius: 12px;
-    padding: 55px;
-    margin-bottom: 30px;
-    background-color: #fdfdfd;
-    width: 600px; 
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
-  /* 입력 공통 */
-  .input-box {
-    margin-bottom: 30px;
-  }
-  
-  .input-box label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 8px;
-  }
-  
-  .input-box input,
-  .input-box select {
-    width: 100%;
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 17px;
-  }
-  
-  /* OS/버전 선택 */
-  .os-selector {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .version-dropdown {
-    position: relative;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    cursor: pointer;
-    background-color: #ffffff;
-    font-size: 16px;
-  }
-  
-  .options {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: #fff;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    display: none;
-    z-index: 10;
-    margin-top: 5px;
-  }
-  
-  .options.show {
-    display: block;
-  }
-  
-  .options div {
-    padding: 10px;
-    cursor: pointer;
-  }
-  
-  .options div:hover {
-    background-color: #f0f0f0;
-  }
-  
-  .button-group {
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 40px;
-    cursor: pointer; /* 클릭 가능한 버튼으로 표시 */
-  }
-  
-  .create-btn,
-  .cancel-btn {
-    padding: 6px 14px;
-    font-size: 14px;
-    max-width: 620px;
-    white-space: nowrap;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
-  .create-btn {
-    background-color: #4caf50;
-    color: white;
-  }
-  
-  .cancel-btn {
-    background-color: #f44336;
-    color: white;
-  }
-  
+/* --- 전체 페이지 및 색상 변수 설정 --- */
+:root {
+  --primary-color: #007bff;
+  --primary-hover-color: #0056b3;
+  --bg-color: #f8f9fa;
+  --card-bg-color: #ffffff;
+  --border-color: #dee2e6;
+  --text-dark: #212529;
+  --text-light: #6c757d;
+}
+
+.create-server-page {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* 위쪽부터 시작 */
+  min-height: 100vh;
+  padding: 60px 20px;
+  background-color: var(--bg-color);
+}
+
+.form-card {
+  width: 100%;
+  max-width: 800px;
+  padding: 40px;
+  background-color: var(--card-bg-color);
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+  opacity: 0;
+  animation: fadeIn-up 0.6s ease-out forwards;
+}
+
+.title {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--text-light);
+  margin-top: 10px;
+  margin-bottom: 50px;
+}
+
+/* --- 섹션 스타일 --- */
+.form-section {
+  margin-bottom: 40px;
+}
+.version-section { /* 버전 선택 시 부드럽게 나타나는 효과 */
+  animation: fadeIn 0.5s ease;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* --- 입력창 스타일 --- */
+.server-name-input, .version-select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+.server-name-input:focus, .version-select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+}
+.version-select:disabled {
+  background-color: #e9ecef;
+  cursor: not-allowed;
+}
+
+/* --- OS 선택 카드 스타일 --- */
+.os-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 16px;
+}
+
+.os-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.os-card:hover {
+  border-color: var(--primary-color);
+  background-color: #f0f8ff;
+}
+.os-card.active { /* 선택된 카드 스타일 */
+  border-color: var(--primary-color);
+  background-color: #e6f2ff;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.1);
+}
+
+.os-icon {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: var(--text-light);
+}
+.os-card.active .os-icon {
+  color: var(--primary-color);
+}
+
+.os-name {
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+/* --- 버튼 그룹 스타일 --- */
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+.create-btn, .cancel-btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.create-btn {
+  background-color: var(--primary-color);
+  color: white;
+}
+.create-btn:hover {
+  background-color: var(--primary-hover-color);
+}
+
+.cancel-btn {
+  background-color: #6c757d;
+  color: white;
+}
+.cancel-btn:hover {
+  background-color: #5a6268;
+}
+
+/* --- 애니메이션 정의 --- */
+@keyframes fadeIn-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

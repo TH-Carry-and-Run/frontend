@@ -1,0 +1,15 @@
+/* 게시판 첫 화면. 서버에서 글 목록 전체를 받아옴 */
+
+.post-list-page-container {
+    max-width: 1024px;
+    margin: 40px auto !important;
+  }
+  
+  .post-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+    border-bottom: 2px solid #333;
+  }

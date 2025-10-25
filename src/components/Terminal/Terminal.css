@@ -1,0 +1,117 @@
+:root {
+  --bg-dark: #1e1e2e;
+  --bg-medium: #27293d;
+  --bg-light: #3b3e58;
+  --text-primary: #cdd6f4;
+  --text-secondary: #a6adc8;
+  --accent-blue: #89b4fa;
+  --accent-mauve: #cba6f7;
+  --danger-color: #dc3545; /* 에러 메시지용 색상 */
+}
+
+body, #root {
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  font-family: 'Fira Code', 'JetBrains Mono', monospace;
+  margin: 0;
+}
+
+.terminal-page-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: var(--bg-medium);
+  border-bottom: 1px solid var(--bg-light);
+  flex-shrink: 0;
+}
+
+.logo {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--accent-mauve);
+}
+
+.terminal-main-content {
+  display: flex;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.terminal-body {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.terminal-bash-wrapper {
+  flex-grow: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  min-height: 200px; /* 터미널 최소 높이 보장 */
+}
+
+/* xterm.js 내부 요소들이 부모 크기에 꽉 차도록 */
+.terminal-bash-wrapper .terminal,
+.terminal-bash-wrapper .xterm-viewport {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.terminal-status-wrapper {
+  margin-top: 30px;
+  flex-shrink: 0; /* 높이가 줄어들지 않도록 */
+}
+
+.management-title {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+/* --- 잘못된 접근 시 에러 페이지 --- */
+.terminal-error-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  text-align: center;
+  padding: 20px;
+}
+
+.terminal-error-page h2 {
+  color: var(--danger-color);
+  margin-bottom: 20px;
+}
+
+.terminal-error-page p {
+  margin-bottom: 30px;
+  color: var(--text-secondary);
+}
+
+.terminal-error-page button {
+  padding: 12px 25px;
+  cursor: pointer;
+  background-color: var(--accent-mauve);
+  color: var(--bg-dark);
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.terminal-error-page button:hover {
+  background-color: #e7c7ff; /* 더 밝은 보라색 */
+}

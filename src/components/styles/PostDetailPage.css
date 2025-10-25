@@ -1,0 +1,17 @@
+/* 글 상세 보기 화면. 글 내용과 댓글들을 받아옴 */
+
+.post-detail-page-container {
+    max-width: 900px;
+    margin: 40px auto !important;
+  }
+  
+  .button-group {
+    margin-top: 24px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+  
+  .divider {
+    margin: 40px 0 !important;
+  }
