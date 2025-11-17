@@ -1,24 +1,41 @@
+/* Navbar 전체 구조 */
 .navbar {
   position: fixed;
   top: 0;
   width: 100%;
   height: 60px;
-  background-color: white;
+  background-color: #ffffff;
   border-bottom: 1px solid #ddd;
   display: flex;
   justify-content: space-between; /* 좌우 정렬 */
-  align-items: center;   /* 세로 정렬 */
+  align-items: center;            /* 세로 정렬 */
   padding: 0 20px;
   z-index: 999;
   box-sizing: border-box;
+  transition: background-color 0.3s ease;
 }
 
+/* 왼쪽 영역 */
 .navbar-left {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
+.logo {
+  font-weight: bold;
+  font-size: 20px;
+  color: #222;
+  cursor: pointer;
+}
+
+.welcome {
+  font-weight: normal;
+  font-size: 14px;
+  color: #666;
+}
+
+/* 중앙 영역 */
 .navbar-center {
   flex-grow: 1;
   text-align: center;
@@ -27,55 +44,56 @@
   padding: 0 20px;
 }
 
+/* 오른쪽 영역 */
 .navbar-right {
   display: flex;
   align-items: center;
-  font-size: 14px;
-  gap: 0px;
+  gap: 10px;
   flex-shrink: 0;
-  flex-direction: row; /* 혹시라도 column 되어 있을 경우 방지 */
+  flex-direction: row;
   flex-wrap: nowrap;
 }
 
-.navbar-left, .navbar-right {
-  flex-shrink: 0;
-}
-
-.logo {
-  /* margin-right: 10px; */
-  font-weight: bold;
-  font-size: 20px;
-}
-
-.welcome {
-  font-weight: normal;
-  font-size: 14px;
-  color: #555;
-}
-
+/* 검색창 */
 .search-bar {
   padding: 4px 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.2s;
 }
 
+.search-bar:focus {
+  outline: none;
+  border-color: #39b07b;
+}
+
+/* 아이콘 버튼 (🔔, 👤, 🌐 등) */
 .icon-button {
   display: flex;
   align-items: center;
+  justify-content: center;
   color: #333;
-  font-size: 14px;
+  font-size: 16px;
   padding: 6px 8px;
   background: none;
   border: none;
   text-decoration: none;
   cursor: pointer;
   min-width: 32px;
-  margin-right: 0;
+  height: 32px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
 }
 
+.icon-button:hover {
+  background-color: #f2f2f2;
+}
+
+/* 로그인 버튼 */
 .login-button {
   background-color: #39b07b;
-  color: black !important;
+  color: #fff !important;
   font-weight: bold;
   padding: 6px 12px;
   border-radius: 4px;
@@ -83,6 +101,80 @@
   cursor: pointer;
   text-decoration: none;
   font-size: 14px;
-  line-height: 1.2;       /* 글자 줄 높이 */
-  white-space: nowrap;  /* 줄바꿈 방지 */
+  line-height: 1.2;
+  white-space: nowrap;
+  transition: background-color 0.2s;
+}
+
+.login-button:hover {
+  background-color: #2e9164;
+}
+
+/* 언어 선택 드롭다운 스타일 (LanguageSelector용) */
+.language-selector {
+  position: relative;
+  display: inline-block;
+}
+
+.lang-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.lang-btn:hover {
+  background-color: #f2f2f2;
+}
+
+.lang-dropdown {
+  position: absolute;
+  right: 0;
+  top: 130%;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  list-style: none;
+  padding: 4px 0;
+  min-width: 120px;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.lang-dropdown li {
+  padding: 8px 14px;
+  cursor: pointer;
+  color: #333;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.lang-dropdown li:hover {
+  background-color: #f5f5f5;
+}
+
+.lang-dropdown li.active {
+  background-color: #39b07b;
+  color: #fff;
+  font-weight: bold;
+}
+
+.logout-button {
+  background-color: transparent;
+  color: #333;
+  border: none;
+  cursor: pointer;
+  padding: 6px 8px;
+  font-size: 14px;
+}
+
+.logout-button:hover {
+  color: #39b07b; /* hover 효과 */
 }

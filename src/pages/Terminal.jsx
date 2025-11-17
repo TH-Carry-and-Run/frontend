@@ -1,75 +1,55 @@
 import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+// import { useLocation, useNavigate } from "react-router-dom"; // 임시 테스트 중에는 사용 안 함
 import TerminalSidebar from "../components/Terminal/TerminalSidebar.jsx";
 import TerminalBash from "../components/Terminal/TerminalBash.jsx";
 import TerminalStatus from "../components/Terminal/TerminalStatus.jsx";
-import "../components/Terminal/Terminal.css";
+import "../components/Terminal/Terminal.css"; // styles 폴더에 있다고 가정
 
 const Terminal = ({ showToast }) => {
-    const location = useLocation();
-    const navigate = useNavigate();
+    // const location = useLocation();
+    // const navigate = useNavigate();
 
-    // --- 4. CreateServer 페이지로부터 navigate state를 통해 presigned-url 전달받기 ---
-    const presignedUrl = location.state?.presignedUrl;
+    // --- 임시 테스트를 위해 고정된 값을 직접 사용합니다 ---
+    const presignedUrl = 'eyJzdWIiOiJoZXlfbWluakBuYXZlci5jb20iLCJwb2ROYW1lIjoicG9kLTM5ZTMwNzlmIiwicG9kTmFtZXNwYWNlIjoiZGVmYXVsdCIsImluZ3Jlc3MiOiJ0Y2FyLmFkbWluLmNvbm5lY3Rpb24uY29tL2RlZmF1bHQvcG9kLTM5ZTMwNzlmIn0'; // VM팀원이 준 임시 토큰(presignedUrl)
+    const podName = 'pod-39e3079f';       // 임시 podName
+    const podNamespace = 'default';     // 임시 podNamespace
 
-    // --- 5. 사이드바 열림/닫힘 상태 관리 ---
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
 
-    // --- 6. URL이 없으면 (직접 /terminal로 접속 시도 등), 잘못된 접근으로 간주하고 에러 화면 표시 ---
-    if (!presignedUrl) {
-        return (
-            <div className="terminal-error-page" style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '100vh',
-                backgroundColor: 'var(--bg-dark, #1e1e2e)', // CSS 변수 사용 시도, 없으면 기본값
-                color: 'var(--text-primary, #cdd6f4)'
-            }}>
-                <h2 style={{ color: 'var(--danger-color, #dc3545)'}}>잘못된 접근입니다.</h2>
-                <p style={{ margin: '20px 0' }}>서버 생성 페이지를 통해 정상적으로 접근해주세요.</p>
-                <button
-                    onClick={() => navigate('/serverpage')}
-                    style={{
-                        padding: '10px 20px',
-                        cursor: 'pointer',
-                        backgroundColor: 'var(--accent-mauve, #cba6f7)',
-                        color: 'var(--bg-dark, #1e1e2e)',
-                        border: 'none',
-                        borderRadius: '8px',
-                        fontWeight: 'bold'
-                    }}
-                >
-                    서버 목록으로 돌아가기
-                </button>
-            </div>
-        );
-    }
+    // --- URL 유효성 검사 로직을 완전히 제거합니다 ---
+    // if (!presignedUrl || !podName || !podNamespace) { ... } // 이 부분을 삭제!
 
-    // --- 7. URL이 있다면 정상적으로 페이지 렌더링 ---
+    // --- 무조건 터미널 페이지를 렌더링합니다 ---
     return (
         <div className="terminal-page-layout">
             <header className="terminal-header">
                 <div className="logo">TCAR</div>
                 <div className="header-actions"></div>
             </header>
-
+            
             <div className="terminal-main-content">
-                {/* --- 8. TerminalSidebar에 상태와 토글 함수 전달 --- */}
                 <TerminalSidebar isOpen={isSidebarOpen} onToggle={toggleSidebar} />
                 <main className="terminal-body">
                     <div className="terminal-bash-wrapper">
-                        {/* --- 9. TerminalBash에 presigned-url과 showToast 전달 --- */}
-                        <TerminalBash showToast={showToast} presignedUrl={presignedUrl} />
+                        {/* --- 임시 값을 자식 컴포넌트로 전달합니다 --- */}
+                        <TerminalBash 
+                            showToast={showToast} 
+                            presignedUrl={presignedUrl} 
+                            podName={podName}
+                            podNamespace={podNamespace}
+                        />
                     </div>
                     <div className="terminal-status-wrapper">
                         <h2 className="management-title">Management</h2>
-                        <TerminalStatus />
+                        {/* --- 임시 값을 TerminalStatus로 전달합니다 --- */}
+                        <TerminalStatus 
+                            podName={podName} 
+                            podNamespace={podNamespace} 
+                        />
                     </div>
                 </main>
             </div>
@@ -78,3 +58,4 @@ const Terminal = ({ showToast }) => {
 };
 
 export default Terminal;
+

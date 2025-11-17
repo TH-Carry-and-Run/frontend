@@ -22,6 +22,22 @@
     backdrop-filter: blur(5px); /* 뒷배경을 흐리게 만듦 */
 }
 
+/* ────────────── 터미널 Bash 전용 ────────────── */
+.terminal-bash-container {
+    background-color: #000; /* 완전 검정 배경 */
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    height: 100%;
+    width: 100%;
+}
+
+/* xterm 기본 내부 배경색(덮어쓰기) */
+.terminal-bash-container .xterm-viewport,
+.terminal-bash-container .xterm-screen {
+    background-color: #000 !important;
+}
+
 /* 팝업창 스타일 */
 .modal {
     background-color: var(--bg-medium);

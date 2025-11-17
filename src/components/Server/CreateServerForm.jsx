@@ -1,3 +1,4 @@
+// CreateServerForm.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa"; // 체크 아이콘

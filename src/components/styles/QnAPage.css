@@ -1,0 +1,189 @@
+/* 기본 설정 (NoticeBoardPage.css와 공유 가능) */
+.full-page-wrapper {
+    padding: 20px;
+  }
+  
+  /* Q&A 컨테이너 (NoticeBoardPage.css와 거의 동일) */
+  .qa-board-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 10px auto; /* 버튼과의 간격을 위해 margin-top 수정 */
+    padding: 25px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .qa-board-container h1 {
+    font-size: 26px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .qa-board-container .subtitle {
+    font-size: 15px;
+    color: #666;
+    margin-bottom: 25px;
+  }
+  
+  /* '문의하기' 버튼 */
+  .qa-button-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 30px auto 0; /* 상단 여백 */
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .write-post-button {
+    background-color: #007bff; /* 메인 파란색 */
+    color: white;
+    padding: 12px 22px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-weight: 600;
+  }
+  
+  .write-post-button:hover {
+    background-color: #0056b3;
+  }
+  
+  
+  /* 검색 필터 (NoticeBoardPage.css와 동일) */
+  .filter-section {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .filter-section input[type="text"] {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #555;
+    width: 300px; /* 너비 고정 */
+  }
+  
+  .filter-section .search-button {
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+  }
+  
+  .filter-section .search-button:hover {
+    background-color: #0056b3;
+  }
+  
+  
+  /* Q&A 테이블 */
+  .qa-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .qa-table th,
+  .qa-table td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    color: #444;
+    vertical-align: middle;
+  }
+  
+  .qa-table th {
+    background-color: #f8f8f8;
+    color: #555;
+    font-weight: 600;
+    border-top: 2px solid #ddd;
+  }
+  
+  /* 컬럼 너비 */
+  .qa-table th:nth-child(1) { width: 10%; } /* 번호 */
+  .qa-table th:nth-child(2) { width: 15%; } /* 답변상태 */
+  .qa-table th:nth-child(3) { width: 45%; } /* 제목 */
+  .qa-table th:nth-child(4) { width: 15%; } /* 작성자 */
+  .qa-table th:nth-child(5) { width: 15%; } /* 작성일 */
+  
+  /* 제목은 왼쪽 정렬 */
+  .qa-table .qa-title {
+    text-align: left;
+  }
+  
+  .qa-table .qa-title span {
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .qa-table .qa-title span:hover {
+    color: #007bff;
+    text-decoration: underline;
+  }
+  
+  /* --- Q&A 전용 스타일 --- */
+  
+  /* 답변 상태 태그 */
+  .status-tag {
+    padding: 4px 10px;
+    border-radius: 12px; /* 둥근 사각형 */
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+  }
+  
+  .status-completed {
+    background-color: #007bff; /* 답변 완료: 파란색 */
+  }
+  
+  .status-pending {
+    background-color: #6c757d; /* 답변 대기: 회색 */
+  }
+  
+  /* 비밀글 아이콘 */
+  .secret-icon {
+    margin-right: 8px;
+    color: #888; /* 아이콘 색상 */
+    font-size: 12px;
+    vertical-align: middle;
+  }
+  
+  
+  /* 페이지네이션 (NoticeBoardPage.css와 동일) */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    gap: 5px;
+  }
+  .pagination button {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    color: #555;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+    border-radius: 4px;
+    min-width: 35px;
+  }
+  .pagination button:hover {
+    background-color: #f0f0f0;
+    border-color: #bbb;
+  }
+  .pagination button.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+    font-weight: bold;
+  }

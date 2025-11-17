@@ -1,17 +1,28 @@
+/* TerminalStatus.css */
+
+/* 🔹 전체 박스 가운데 정렬 */
 .status-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4개의 열로 구성 */
-    gap: 20px;
+    display: flex;
+    justify-content: center; /* 가운데 정렬 */
+    align-items: center;
+    gap: 40px; /* 박스 간격 */
     color: var(--text-primary);
+    margin-top: 20px;
 }
 
+/* 🔹 개별 상태 박스 */
 .status-box {
     background-color: var(--bg-medium);
+    width: 180px;
+    height: 120px;
     padding: 25px;
     border-radius: 12px;
     text-align: center;
     border: 1px solid var(--bg-light);
     transition: transform 0.2s ease-in-out, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .status-box:hover {
@@ -19,16 +30,28 @@
     box-shadow: 0 8px 20px rgba(0,0,0,0.2);
 }
 
+/* 🔹 제목 (CPU, Memory) */
 .status-box h3 {
-    margin: 0 0 15px 0;
+    margin: 0 0 12px 0;
     font-size: 1rem;
     color: var(--text-secondary);
     font-weight: normal;
 }
 
+/* 🔹 값 부분 (예: 12%, 15%) */
 .status-box p {
     margin: 0;
-    font-size: 1.75rem;
+    font-size: 1.8rem;
     font-weight: bold;
     color: var(--accent-blue);
+}
+
+/* 🔹 CPU 박스에 강조 색상 (12%) */
+.status-box:nth-child(1) p {
+    color: #3ba1ff; /* 파란색 계열 강조 */
+}
+
+/* 🔹 Memory 박스에 다른 색상 (15%) */
+.status-box:nth-child(2) p {
+    color: #39b07b; /* 초록색 계열 강조 */
 }

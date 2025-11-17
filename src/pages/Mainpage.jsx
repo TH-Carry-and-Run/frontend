@@ -1,30 +1,57 @@
-import React from 'react';
+// src/pages/Mainpage.jsx
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Nav/Navbar';
 import "../components/styles/Mainpage.css";
 import { FaServer, FaComments, FaQuestionCircle, FaBullhorn, FaRocket, FaShieldAlt } from 'react-icons/fa';
 
-function MainPage() {
+function MainPage({ showToast }) {
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // 각 버튼 클릭 시 이동할 경로를 함수로 관리
-  const handleNavigate = (path) => {
-    navigate(path);
+  const refreshLoginState = () => {
+    const token = localStorage.getItem('accessToken');
+    setIsLoggedIn(!!token);
+  };
+
+  useEffect(() => {
+    refreshLoginState();
+    const onStorage = (e) => { if (e.key === 'accessToken') refreshLoginState(); };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, []);
+
+  const handleNavigate = (path) => navigate(path);
+
+  // MyServer 카드 클릭 시 분기
+  const handleMyServerClick = () => {
+    if (!isLoggedIn) {
+      showToast && showToast("로그인이 필요합니다.", "warning");
+      navigate('/login');
+    } else {
+      navigate('/createserver');
+    }
   };
 
   return (
     <div className="main-page-container">
       <Navbar />
       <main className="main-content">
-        
         {/* --- 대표 영역 (Hero Section) --- */}
         <section className="hero-section">
           <div className="hero-content">
             <h1 className="hero-title">Welcome to TCAR Cloud</h1>
             <p className="hero-subtitle">가장 빠르고 안정적인 클라우드 개발 환경을 경험해보세요.</p>
-            <button className="hero-button" onClick={() => handleNavigate('/signup')}>
-              지금 시작하기
-            </button>
+
+            {isLoggedIn ? (
+              <button className="hero-button" onClick={() => navigate('/createserver')}>
+                내 서버 만들기
+              </button>
+            ) : (
+              <button className="hero-button" onClick={() => navigate('/login')}>
+                로그인
+              </button>
+            )}
           </div>
         </section>
 
@@ -32,7 +59,7 @@ function MainPage() {
         <section className="features-section">
           <h2 className="section-title">주요 기능</h2>
           <div className="features-grid">
-            <div className="feature-card" onClick={() => handleNavigate('/serverpage')}>
+            <div className="feature-card" onClick={handleMyServerClick}>
               <FaServer className="feature-icon" />
               <h3 className="feature-title">MyServer</h3>
               <p className="feature-description">클릭 몇 번으로 나만의 가상 서버를 생성하고 관리하세요.</p>
@@ -68,12 +95,12 @@ function MainPage() {
         {/* --- 행동 유도 영역 --- */}
         <section className="cta-section">
           <h2 className="cta-title">지금 바로 당신의 프로젝트를 시작해보세요</h2>
-          <button className="cta-button" onClick={() => handleNavigate('/serverpage')}>
+          <button className="cta-button" onClick={handleMyServerClick}>
             서버 생성하기
           </button>
         </section>
-
       </main>
+
       <footer className="footer">
         <p>&copy; 2025 TCAR. All Rights Reserved.</p>
       </footer>
