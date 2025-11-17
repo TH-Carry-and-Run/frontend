@@ -13,7 +13,6 @@ import ServerPage from './pages/ServerPage';
 import DeleteServer from "./pages/DeleteServer";
 import ProtectedRoute from "./components/Nav/ProtectedRoute";
 import CreateServerForm from './components/Server/CreateServerForm';
-import ServerIDE from './components/Server/ServerIDE';
 import './components/styles/Mainpage.css';
 import PostListPage from "./pages/PostListPage";
 import PostDetailPage from "./pages/PostDetailPage";
@@ -22,7 +21,7 @@ import Modify from "./pages/Modify";
 import Terminal from './pages/Terminal';
 import NoticeBoardPage from "./pages/NoticeBoardPage"; 
 import QnABoardPage from "./pages/QnAPage";
-import ServerLoading from "./components/Server/ServerLoading";
+// import ServerLoading from "./components/Server/ServerLoading";
 
 function App () {
   const [toast, setToast] = useState({ message: "", show: false, type: 'info' });
@@ -45,7 +44,7 @@ function App () {
           <Route path="/main" element={<Mainpage showToast={showToast} />} />
           <Route path="/createserver" element={<CreateServer showToast={showToast} />} />
           <Route path="/deleteserver" element={<DeleteServer showToast={showToast} />} />
-          <Route path="/server-loading" element={<ServerLoading showToast={showToast} />} />
+          {/* <Route path="/server-loading" element={<ServerLoading showToast={showToast} />} /> */}
 
           {/* 게시판 */}
           <Route path="/posts" element={<PostListPage />} />
@@ -62,9 +61,6 @@ function App () {
 
           {/* 터미널 */}
           <Route path="/terminal" element={<Terminal showToast={showToast} />} />
-
-          {/* 서버 생성 후 presigned URL 기다리는 로딩 화면 */}
-          <Route path="/server-loading" element={<ServerLoading />} />
 
           {/* 보호 라우트 */}
           <Route
@@ -89,7 +85,6 @@ function App () {
             path="/test-form"
             element={<CreateServerForm preSignedUrl="https://example.com" showToast={showToast} />}
           />
-          <Route path="/server-ide" element={<ServerIDE showToast={showToast} />} />
           <Route path="/delete-server" element={<DeleteServer showToast={showToast} />} />
         </Routes>
       </Router>

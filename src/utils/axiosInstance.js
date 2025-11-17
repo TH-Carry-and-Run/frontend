@@ -2,6 +2,7 @@
 
 import axios from 'axios';
 import { BACKEND_URL } from "../config";
+console.log("✅ Axios Base URL:", BACKEND_URL);
 
 
 const axiosInstance = axios.create({
