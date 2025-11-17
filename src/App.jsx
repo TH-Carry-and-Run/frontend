@@ -12,7 +12,7 @@ import CreateServer from './pages/CreateServer';
 import ServerPage from './pages/ServerPage';
 import DeleteServer from "./pages/DeleteServer";
 import ProtectedRoute from "./components/Nav/ProtectedRoute";
-import CreateServerForm from './components/Server/CreateServerForm';
+// import CreateServerForm from './components/Server/CreateServerForm';
 import './components/styles/Mainpage.css';
 import PostListPage from "./pages/PostListPage";
 import PostDetailPage from "./pages/PostDetailPage";
@@ -81,10 +81,10 @@ function App () {
           />
 
           {/* 기타 */}
-          <Route
+          {/* <Route
             path="/test-form"
-            element={<CreateServerForm preSignedUrl="https://example.com" showToast={showToast} />}
-          />
+            element={<CreateServerForm preSignedUrl="https://example.com" showToast={showToast} />} */}
+          {/* /> */}
           <Route path="/delete-server" element={<DeleteServer showToast={showToast} />} />
         </Routes>
       </Router>

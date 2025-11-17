@@ -13,10 +13,11 @@ const osOptions = [
 ];
 
 const CreateServer = ({ showToast }) => {
+  console.log("[CreateServer] 컴포넌트 마운트됨");
   const navigate = useNavigate();
   const [selectedOs, setSelectedOs] = useState(null);
   const [selectedVersion, setSelectedVersion] = useState("");
-  const [isLoading, setIsLoading] = useState(false);   // 🔹 로딩 상태 추가
+  const [isLoading, setIsLoading] = useState(false);   // 로딩 상태 추가
 
   useEffect(() => {
     if (selectedOs === "Ubuntu") {
@@ -31,6 +32,7 @@ const CreateServer = ({ showToast }) => {
 
   // 서버 생성 + presignedUrl 받기 + 터미널 이동까지 한 번에
   const handleCreate = async () => {
+    console.log("[CreateServer] handleCreate 호출");
     if (!selectedOs || !selectedVersion) {
       showToast("운영체제와 버전을 선택해주세요.", "warning");
       return;

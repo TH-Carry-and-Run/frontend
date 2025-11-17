@@ -142,6 +142,7 @@
 // export default ServerPage;
 
 
+// ServerPage.jsx: 서버 메인 대시보드 (서버 생성버튼 -> CreateServerPage.jsx로 이동)
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import '../components/styles/ServerPage.css'; // ✨ CSS 경로를 styles 폴더로 가정합니다.
@@ -151,6 +152,7 @@ import { FaServer, FaPlay, FaStop, FaPlus, FaTrash } from 'react-icons/fa';
 
 const ServerPage = ({ showToast }) => {
   const navigate = useNavigate();
+  console.log("[ServerPage] 마운트됨"); // My Server에 접속할 때
 
   const [user, setUser] = useState(null);
   const [servers, setServers] = useState([]);
@@ -182,7 +184,10 @@ const ServerPage = ({ showToast }) => {
   const myServerCount = servers.length;
   const runningCount = servers.filter(server => server.status.toLowerCase() === 'running').length;
   
-  const handleGoToCreatePage = () => navigate("/createserver");
+  const handleGoToCreatePage = () => {
+    console.log("[ServerPage] handleGoToCreatePage 호출");
+    navigate("/createserver");
+  };
 
   const handleOpenDeleteModal = (server) => {
     setDeleteTarget(server);
