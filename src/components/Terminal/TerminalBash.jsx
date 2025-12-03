@@ -18,6 +18,10 @@ const TerminalBash = ({ showToast, presignedUrl, podName, podNamespace }) => {
   const POD_NAME = 'pod-92f9dcfa';
   const POD_NAMESPACE = 'default';
 
+  // const TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwicG9kTmFtZSI6InBvZC0zNGFjNzliOSIsInBvZE5hbWVzcGFjZSI6ImRlZmF1bHQiLCJpbmdyZXNzIjoidGNhci5hZG1pbi5jb25uZWN0aW9uLmNvbS9kZWZhdWx0L3BvZC0zNGFjNzliOSIsImlhdCI6MTc2MTU3NDYyNywiZXhwIjoxNzYxNTc0OTI3fQ.g7jamWQGICjMOKVEZqrS_GsOHRXGiGmVXkp-p8hUwsY';
+  // const POD_NAME = 'pod-34ac79b9';
+  // const POD_NAMESPACE = 'default';
+
   useEffect(() => {
     let isMounted = true;
     let resizeListener = null;

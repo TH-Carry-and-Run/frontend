@@ -1,114 +1,208 @@
-/* ===== 서버 목록 그리드 ===== */
+/* --- ServerList.css --- */
+
+/* 1. 그리드 레이아웃 */
 .server-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  padding: 1rem 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* 카드 너비 최적화 */
+  gap: 25px;
+  padding-bottom: 50px;
 }
 
-/* ===== 개별 카드 ===== */
+
+/* 2. 서버 카드 (공통 스타일) */
 .server-card {
   background-color: #fff;
-  border: 1.5px solid #e5e7eb;
   border-radius: 16px;
-  width: 230px;
-  min-height: 260px;
-  padding: 1.3rem 1rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* 부드러운 그림자 */
+  border: 1px solid #f0f0f0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  height: 400px; /* 카드 높이 고정 */
   position: relative;
-  transition: box-shadow 0.2s ease;
 }
 
 .server-card:hover {
-  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  transform: translateY(-5px); /* 마우스 올리면 살짝 뜸 */
+  box-shadow: 0 10px 25px rgba(0, 123, 255, 0.15);
+  border-color: #cce5ff;
 }
 
-/* ===== + 카드 (새 서버 생성) ===== */
-.add-card {
+
+/* 3. 카드 헤더 (상태 뱃지 + 삭제 버튼) */
+.card-header {
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f5f5f5;
+  background-color: #fff;
+}
+
+/* 상태 뱃지 */
+.status-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-running {
+  background-color: #e6fcf5;
+  color: #0ca678; /* 초록색 */
+}
+
+.status-stopped {
+  background-color: #fff5f5;
+  color: #fa5252; /* 빨간색 */
+}
+
+/* [요청하신 디자인] 빨간색 삭제 아이콘 버튼 */
+.trash-btn-styled {
+  background-color: #fff5f5; /* 연한 빨강 배경 */
+  border: 1px solid #ffc9c9;
+  color: #fa5252; /* 빨간색 아이콘 */
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.trash-btn-styled:hover {
+  background-color: #ff8787; /* 진한 빨강 배경 */
+  color: white; /* 아이콘 흰색 */
+  border-color: #ff8787;
+  transform: scale(1.05);
+}
+
+
+/* 4. 카드 본문 (아이콘 + 텍스트 정보) */
+.card-body {
+  flex: 1;
+  padding: 20px;
   display: flex;
-  background-color: #e0f2fe;
-  color: #0284c7;
-  font-size: 2.4rem;
-  font-weight: bold;
-  cursor: pointer;
-  min-height: 260px;
-  border: 2px dashed #7dd3fc;
-  border-radius: 16px;
-  transition: background 0.18s ease;
+  flex-direction: column;
+  align-items: center;
 }
 
-.add-card:hover {
-  background-color: #bae6fd;
+.server-icon-area {
+  margin-bottom: 15px;
 }
 
-/* ===== 삭제 버튼 (우측 상단 X) ===== */
-.trash-btn {
-  background: none;
-  border: none;
-  position: absolute;
-  right: 1.0rem;
-  top: 1.0rem;
-  cursor: pointer;
-  color: #e11d48;
-  font-size: 1.15rem;
-  transition: color 0.15s ease;
+.server-main-icon {
+  font-size: 3rem;
+  color: #e9ecef; /* 은은한 아이콘 색상 */
 }
 
-.trash-btn:hover {
-  color: #be123c;
+.server-details {
+  width: 100%;
+  font-size: 0.9rem;
 }
 
-/* ===== 서버 정보 영역 ===== */
-.server-info {
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
+/* 정보 한 줄 (이름: 값) */
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed #f1f3f5; /* 점선 구분선 */
 }
 
-.server-title {
-  font-size: 1.18rem;
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.label {
+  color: #868e96;
+  font-weight: 500;
+}
+
+.value {
+  color: #343a40;
   font-weight: 600;
-  color: #0369a1;
-  margin-bottom: 0.6rem;
-  letter-spacing: -0.5px;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;
 }
 
-.server-info > div {
-  font-size: 0.95rem;
-  margin-bottom: 0.25rem;
-  color: #334155;
-  line-height: 1.25rem;
+.value.bold {
+  color: #007bff; /* 서버 이름 파란색 강조 */
+  font-size: 1rem;
 }
 
-/* Status 강조 */
-.server-info > div:nth-child(4) {
-  font-weight: 600;
-  color: #1e3a8a;
+
+/* 5. 카드 푸터 (접속 버튼) */
+.card-footer {
+  padding: 15px 20px;
+  background-color: #f8f9fa; /* 본문과 구분되는 연한 회색 배경 */
 }
 
-/* ===== 접속하기 버튼 ===== */
 .access-btn {
-  margin-top: auto;
-  background-color: #0284c7;
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 8px;
-  padding: 8px 12px;
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.15s ease;
+  transition: background-color 0.2s;
 }
 
 .access-btn:hover {
-  background-color: #0369a1;
-  transform: translateY(-2px);
+  background-color: #0056b3;
 }
 
-.access-btn:active {
-  background-color: #075985;
+
+/* 6. 새 서버 생성 (+ 아이콘) 카드 */
+.server-card.add-card {
+  border: 2px dashed #dee2e6; /* 파란색 점선 테두리 */
+  background-color: #fcfcfc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  /* 높이는 일반 카드와 동일하게 유지됨 */
+}
+
+.add-card:hover {
+  border-color: #007bff;
+  background-color: #f0f7ff;
+}
+
+.add-icon-wrapper {
+  width: 60px;
+  height: 60px;
+  background-color: #e7f5ff;
+  color: #007bff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  transition: transform 0.3s;
+}
+
+.add-card:hover .add-icon-wrapper {
+  transform: scale(1.1);
+  background-color: #007bff;
+  color: white;
+}
+
+.add-text {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #495057;
 }

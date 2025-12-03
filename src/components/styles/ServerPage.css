@@ -183,3 +183,96 @@
   box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
   border-color: var(--primary-blue);
 }
+
+/* --- 삭제 확인 모달 디자인 --- */
+
+/* 1. 배경 오버레이 (화면 전체 덮기 & 중앙 정렬) */
+.custom-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명 검정 배경 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  backdrop-filter: blur(2px); /* 배경 살짝 흐리게 */
+}
+
+/* 2. 모달 창 박스 */
+.custom-modal-content {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  animation: popIn 0.2s ease-out;
+  border: 1px solid #e9ecef;
+}
+
+/* 삭제 모달 크기 조절 */
+.delete-modal-size {
+  min-width: 320px;
+  max-width: 400px;
+}
+
+/* 제목 스타일 */
+.delete-title {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #212529;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+/* 내용 텍스트 */
+.delete-message {
+  color: #495057;
+  font-size: 1rem;
+  margin-bottom: 25px;
+  line-height: 1.5;
+}
+
+/* 버튼 영역 */
+.custom-modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* 버튼 공통 */
+.modal-btn {
+  padding: 10px 20px;
+  border-radius: 6px;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+/* 취소 버튼 */
+.modal-btn.cancel {
+  background-color: #f1f3f5;
+  color: #495057;
+}
+.modal-btn.cancel:hover {
+  background-color: #e9ecef;
+}
+
+/* 삭제 확인 버튼 (빨간색 강조) */
+.modal-btn.delete-confirm {
+  background-color: #fa5252;
+  color: white;
+}
+.modal-btn.delete-confirm:hover {
+  background-color: #e03131;
+}
+
+/* 나타나는 애니메이션 */
+@keyframes popIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}

@@ -1,92 +1,66 @@
-// // TerminalStatus.jsx
-// import React, { useEffect, useState } from "react";
-// import axiosInstance from '../../utils/axiosInstance';
-// // --- config.js에서 VM_URL을 가져오는 import 구문을 추가합니다! ---
-// import { VM_URL } from '../../config';
-// import "./TerminalStatus.css";
-
-// // --- props (podName, podNamespace)는 받지만 임시 테스트 중에는 사용하지 않음 ---
-// const TerminalStatus = ({ podName, podNamespace }) => {
-//     const [stats, setStats] = useState({
-//         cpu: 0,
-//         memory: 0,
-//         uplink: 0,
-//         downlink: 0,
-//     });
-
-//     useEffect(() => {
-//         // --- props 유효성 검사는 임시 테스트 중에는 주석 처리 ---
-//         // if (!podName || !podNamespace) { ... }
-
-//         const interval = setInterval(() => {
-//             // --- 이제 VM_URL 변수를 정상적으로 사용할 수 있습니다 ---
-//             axiosInstance
-//                 .get(`${VM_URL}/api/monitor/pod`, {
-//                     params: {
-//                         podNamespace : "default",
-//                         podName: "pod-5f164071",
-//                     },
-//                 })
-//                 .then((res) => setStats(res.data))
-//                 .catch((err) => {
-//                     // console.warn(`모니터링 실패:`, err.message);
-//                 });
-//         }, 2000);
-
-//         return () => clearInterval(interval);
-
-//     }, []);
-
-//     return (
-//         <div className="status-container">
-//             <div className="status-box">
-//                 <h3>💻 CPU</h3>
-//                 <p>{stats.cpu ? stats.cpu.toFixed(2) : 0}%</p>
-//             </div>
-//             <div className="status-box">
-//                 <h3>🧠 Memory</h3>
-//                 <p>{stats.memory ? stats.memory.toFixed(2) : 0}%</p>
-//             </div>
-//         </div>
-//     );
-// };
-
-// export default TerminalStatus;
-
-
-
-import React, { useState } from "react"; // useEffect, axiosInstance, VM_URL 제거
+import React, { useEffect, useState } from "react";
+import axios from "axios"; 
 import "./TerminalStatus.css";
 
-// props (podName, podNamespace)는 더 이상 필요 없으므로 제거해도 됩니다 (선택 사항)
-const TerminalStatus = ({ podName, podNamespace }) => {
-    // --- ✨ useState의 초기값을 원하는 고정값으로 설정 ---
+const TerminalStatus = () => {
     const [stats, setStats] = useState({
-        cpu: 12,    // CPU 12%
-        memory: 15,   // Memory 15%
-        // uplink, downlink은 제거하거나 0으로 유지
-        uplink: 0, 
-        downlink: 0,
+        cpu: 0,
+        memory: 0
     });
 
-    // --- ✨ useEffect와 API 호출 로직 전체 제거 ---
-    // useEffect(() => { ... }, []); 
+    // --- [설정] TerminalBash와 동일하게 하드코딩 (테스트용) ---
+    // 팀원이 준 모니터링 주소
+    const MONITOR_API_URL = "http://3.39.199.192:8080/api/monitor/pod";
+    
+    // TerminalBash에 있는 값과 동일하게 설정
+    const POD_NAME = 'pod-92f9dcfa';
+    const POD_NAMESPACE = 'default';
+
+    useEffect(() => {
+        const fetchStatus = async () => {
+            try {
+                // GET http://3.39.199.192:8080/api/monitor/pod?podName=...&podNamespace=...
+                const res = await axios.get(MONITOR_API_URL, {
+                    params: {
+                        podName: POD_NAME,
+                        podNamespace: POD_NAMESPACE,
+                    },
+                    timeout: 2000 // 2초 안에 응답 안 오면 끊기
+                });
+                
+                // 데이터 확인용 로그 (확인 후 주석 처리하세요)
+                console.log("[Status API 응답]", res.data);
+
+                setStats({
+                    cpu: res.data.cpu || 0,
+                    memory: res.data.memory || 0
+                });
+            } catch (err) {
+                console.error(`[Status Error] 상태 조회 실패:`, err);
+            }
+        };
+
+        // 1. 시작하자마자 1회 실행
+        fetchStatus();
+
+        // 2. 1초(1000ms)마다 반복 실행
+        const interval = setInterval(fetchStatus, 1000);
+
+        // 3. 컴포넌트가 꺼질 때 반복 중단
+        return () => clearInterval(interval);
+
+    }, []); // 빈 배열: 컴포넌트가 처음 나타날 때 한 번만 실행 (내부 interval이 계속 돔)
 
     return (
         <div className="status-container">
             <div className="status-box">
-                <h3>💻 CPU</h3> 
-                {/* stats 상태값을 직접 사용 */}
-                <p>{stats.cpu.toFixed(2)}%</p> 
+                <h3>💻 CPU</h3>
+                <p>{Number(stats.cpu).toFixed(2)}%</p>
             </div>
             <div className="status-box">
                 <h3>🧠 Memory</h3>
-                 {/* stats 상태값을 직접 사용 */}
-                <p>{stats.memory.toFixed(2)}%</p>
+                <p>{Number(stats.memory).toFixed(2)}%</p>
             </div>
-            {/* --- Uplink, Downlink 박스는 제거 --- */}
-            {/* <div className="status-box"> ... </div> */}
-            {/* <div className="status-box"> ... </div> */}
         </div>
     );
 };

@@ -1,4 +1,3 @@
-// src/pages/ServerPage.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Nav/Navbar";
@@ -10,7 +9,7 @@ import DeleteServer from "./DeleteServer";
 const ServerPage = ({ showToast }) => {
   const navigate = useNavigate();
 
-  const [user, setUser] = useState(null);      // optional
+  const [user, setUser] = useState(null);
   const [servers, setServers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -21,17 +20,23 @@ const ServerPage = ({ showToast }) => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        // (선택) localStorage 에서 유저 정보 복구
+        // 유저 정보 복구
         const storedUser = localStorage.getItem("currentUser");
         if (storedUser) {
           setUser(JSON.parse(storedUser));
         }
 
-        // 내 pod 목록 불러오기
-        const serversRes = await axiosInstance.get("/api/container/pods");
-        setServers(serversRes.data.servers || []);
+        // 서버 목록 조회
+        const serversRes = await axiosInstance.get("/api/container/pods");    
+        console.log("서버 목록 응답 데이터:", serversRes.data);
+        const fetchedData = serversRes.data;
+
+        // 혹시 모르니 배열인지 확인하고 넣기 (아니면 빈 배열)
+        setServers(Array.isArray(fetchedData) ? fetchedData : []);
+
       } catch (err) {
         console.error("[ServerPage] fetch error", err);
+        // 401 에러(로그인 만료)일 경우 처리가 필요할 수 있습니다.
         showToast?.("데이터를 불러오는 데 실패했습니다.", "error");
       } finally {
         setIsLoading(false);
@@ -68,11 +73,13 @@ const ServerPage = ({ showToast }) => {
     try {
       showToast?.("터미널 접속 정보를 요청 중입니다…", "info");
 
-      const res = await axiosInstance.post("/api/container/access", {
+      // 터미널 접속 토큰 발급
+      const res = await axiosInstance.post("/api/container/presign", {
         podName: server.podName,
         podNamespace: server.podNamespace,
       });
 
+      // 응답에서 url 추출
       const preSignedUrl =
         res.data?.preSignedUrl || res.data?.presignedUrl || res.data?.url;
 
@@ -93,7 +100,6 @@ const ServerPage = ({ showToast }) => {
     }
   };
 
-  // ❗이제는 user 여부와 상관없이 isLoading 만 체크
   if (isLoading) {
     return (
       <div className="server-page-loading">
@@ -124,29 +130,21 @@ const ServerPage = ({ showToast }) => {
         </header>
 
         <section className="server-page-list-section">
-          {servers.length === 0 ? (
-            <div className="server-empty-card">
-              <p>현재 생성된 서버가 없습니다.</p>
-              <button
-                className="server-empty-create-btn"
-                onClick={handleGoToCreatePage}
-              >
-                첫 서버 만들기
-              </button>
-            </div>
-          ) : (
-            <ServerList
-              servers={servers}
-              onDelete={handleOpenDeleteModal}
-              onAccess={handleAccessServer}
-            />
-          )}
+          {/* 데이터가 비어있어도 ServerList를 렌더링해야 
+            ServerList 내부의 '+' 버튼(새 서버 생성 카드)이 보입니다.
+          */}
+          <ServerList
+            servers={servers}
+            onDelete={handleOpenDeleteModal}
+            onAccess={handleAccessServer}
+          />
         </section>
       </main>
 
       {showDeleteModal && deleteTarget && (
         <DeleteServer
-          podNamespace={deleteTarget.podNamespace}
+          podNamespace={deleteTarget.podNamespace || deleteTarget.namespace} 
+          
           podName={deleteTarget.podName}
           onClose={handleCloseDeleteModal}
           onDeleteSuccess={handleDeleteSuccess}
