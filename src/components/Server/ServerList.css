@@ -1,3 +1,4 @@
+/* ===== 서버 목록 그리드 ===== */
 .server-grid {
   display: flex;
   flex-wrap: wrap;
@@ -5,25 +6,27 @@
   padding: 1rem 0;
 }
 
+/* ===== 개별 카드 ===== */
 .server-card {
   background-color: #fff;
   border: 1.5px solid #e5e7eb;
   border-radius: 16px;
   width: 230px;
-  min-height: 210px;
-  padding: 1.3rem 1rem 1.3rem 1rem;
+  min-height: 260px;
+  padding: 1.3rem 1rem;
   box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   position: relative;
-  transition: box-shadow 0.2s;
+  transition: box-shadow 0.2s ease;
 }
 
 .server-card:hover {
   box-shadow: 0 6px 18px rgba(0,0,0,0.12);
 }
 
+/* ===== + 카드 (새 서버 생성) ===== */
 .add-card {
   align-items: center;
   justify-content: center;
@@ -33,15 +36,17 @@
   font-size: 2.4rem;
   font-weight: bold;
   cursor: pointer;
-  min-height: 210px;
+  min-height: 260px;
   border: 2px dashed #7dd3fc;
-  transition: background 0.18s;
+  border-radius: 16px;
+  transition: background 0.18s ease;
 }
 
 .add-card:hover {
   background-color: #bae6fd;
 }
 
+/* ===== 삭제 버튼 (우측 상단 X) ===== */
 .trash-btn {
   background: none;
   border: none;
@@ -51,15 +56,17 @@
   cursor: pointer;
   color: #e11d48;
   font-size: 1.15rem;
-  transition: color 0.15s;
+  transition: color 0.15s ease;
 }
 
 .trash-btn:hover {
   color: #be123c;
 }
 
+/* ===== 서버 정보 영역 ===== */
 .server-info {
   margin-top: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .server-title {
@@ -71,7 +78,37 @@
 }
 
 .server-info > div {
-  font-size: 0.98rem;
-  margin-bottom: 0.22rem;
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
   color: #334155;
+  line-height: 1.25rem;
+}
+
+/* Status 강조 */
+.server-info > div:nth-child(4) {
+  font-weight: 600;
+  color: #1e3a8a;
+}
+
+/* ===== 접속하기 버튼 ===== */
+.access-btn {
+  margin-top: auto;
+  background-color: #0284c7;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.access-btn:hover {
+  background-color: #0369a1;
+  transform: translateY(-2px);
+}
+
+.access-btn:active {
+  background-color: #075985;
 }

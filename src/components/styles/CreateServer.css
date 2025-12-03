@@ -168,3 +168,16 @@
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
+/* 제목과 티어 뱃지를 가로로 배치 */
+.title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* title-row 안에서는 왼쪽 정렬로 보이도록 */
+.title-row .title {
+  text-align: left;
+}

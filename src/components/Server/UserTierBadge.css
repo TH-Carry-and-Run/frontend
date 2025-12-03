@@ -1,0 +1,43 @@
+/* src/components/styles/UserTierBadge.css */
+
+.tier-badge-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 공통 배지 스타일 */
+.tier-badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid #e0e3ea;
+  background-color: #f8fafc;
+}
+
+/* 티어별 색상 */
+.tier-basic {
+  background-color: #e0f2fe;
+  color: #0369a1;
+}
+
+.tier-pro {
+  background-color: #ede9fe;
+  color: #5b21b6;
+}
+
+.tier-enterprise {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.tier-admin {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.tier-usage {
+  font-size: 0.85rem;
+  color: var(--text-light);
+}

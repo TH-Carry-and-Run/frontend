@@ -14,8 +14,8 @@ const TerminalBash = ({ showToast, presignedUrl, podName, podNamespace }) => {
   const fitAddon = useRef(new FitAddon());
 
   const TOKEN =
-    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoZXlfbWluakBuYXZlci5jb20iLCJwb2ROYW1lIjoicG9kLTM5ZTMwNzlmIiwicG9kTmFtZXNwYWNlIjoiZGVmYXVsdCIsImluZ3Jlc3MiOiJ0Y2FyLmFkbWluLmNvbm5lY3Rpb24uY29tL2RlZmF1bHQvcG9kLTM5ZTMwNzlmIn0.Idfos3fL7mDXW1Cu5YSJWexhKVgdOQnMvjEkXdagXgg';
-  const POD_NAME = 'pod-39e3079f';
+    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwicG9kTmFtZSI6InBvZC05MmY5ZGNmYSIsInBvZE5hbWVzcGFjZSI6ImRlZmF1bHQiLCJpbmdyZXNzIjoidGNhci5hZG1pbi5jb25uZWN0aW9uLmNvbS9kZWZhdWx0L3BvZC05MmY5ZGNmYSJ9.XAITeBWU3txa9_YQFzNioYAjdACA977SMux65MePWbM';
+  const POD_NAME = 'pod-92f9dcfa';
   const POD_NAMESPACE = 'default';
 
   useEffect(() => {

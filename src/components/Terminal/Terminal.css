@@ -1,117 +1,209 @@
-:root {
-  --bg-dark: #1e1e2e;
-  --bg-medium: #27293d;
-  --bg-light: #3b3e58;
-  --text-primary: #cdd6f4;
-  --text-secondary: #a6adc8;
-  --accent-blue: #89b4fa;
-  --accent-mauve: #cba6f7;
-  --danger-color: #dc3545; /* 에러 메시지용 색상 */
-}
+/* src/components/Terminal/Terminal.css */
 
-body, #root {
-  background-color: var(--bg-dark);
-  color: var(--text-primary);
-  font-family: 'Fira Code', 'JetBrains Mono', monospace;
-  margin: 0;
-}
-
+/* 전체 페이지 레이아웃 */
 .terminal-page-layout {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100vh; /* 화면 전체 높이 사용 */
+  background-color: #1e1e1e; /* 전체 배경 어두운 색 */
+  color: #ffffff;
+  font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+  overflow: hidden; /* 스크롤 방지 */
 }
 
-.terminal-header {
+/* 로딩 화면 */
+.loading-screen {
+  height: 100vh;
   display: flex;
   align-items: center;
+  justify-content: center;
+  background-color: #1e1e1e;
+  color: #ffffff;
+  font-size: 1.5rem;
+}
+
+/* --- 상단 헤더 --- */
+.terminal-header {
+  height: 60px;
+  background-color: #252526; /* VS Code 헤더 느낌 */
+  border-bottom: 1px solid #333;
+  display: flex;
   justify-content: space-between;
-  padding: 10px 20px;
-  background-color: var(--bg-medium);
-  border-bottom: 1px solid var(--bg-light);
-  flex-shrink: 0;
+  align-items: center;
+  padding: 0 25px;
+  flex-shrink: 0; /* 크기 줄어들지 않음 */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  z-index: 10;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
 .logo {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: var(--accent-mauve);
-}
-
-.terminal-main-content {
-  display: flex;
-  flex-grow: 1;
-  overflow: hidden;
-}
-
-.terminal-body {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  overflow-y: auto;
-}
-
-.terminal-bash-wrapper {
-  flex-grow: 1;
-  border-radius: 8px;
-  overflow: hidden;
-  min-height: 200px; /* 터미널 최소 높이 보장 */
-}
-
-/* xterm.js 내부 요소들이 부모 크기에 꽉 차도록 */
-.terminal-bash-wrapper .terminal,
-.terminal-bash-wrapper .xterm-viewport {
-    width: 100% !important;
-    height: 100% !important;
-}
-
-.terminal-status-wrapper {
-  margin-top: 30px;
-  flex-shrink: 0; /* 높이가 줄어들지 않도록 */
-}
-
-.management-title {
   font-size: 1.5rem;
-  margin-bottom: 20px;
-  text-align: center;
-  color: var(--text-secondary);
+  font-weight: 800;
+  color: #007bff; /* TCAR 블루 */
+  letter-spacing: 1px;
 }
 
-/* --- 잘못된 접근 시 에러 페이지 --- */
-.terminal-error-page {
+.server-info-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #333;
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  color: #e0e0e0;
+  border: 1px solid #444;
+}
+
+/* EXIT 버튼 */
+.exit-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #d32f2f; /* 빨간색 */
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.exit-btn:hover {
+  background-color: #b71c1c;
+  transform: translateY(-1px);
+}
+
+/* --- 메인 컨텐츠 (터미널 + 상태창) --- */
+.terminal-main-content {
+  flex: 1; /* 남은 높이 모두 차지 */
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: var(--bg-dark);
-  color: var(--text-primary);
-  text-align: center;
   padding: 20px;
+  gap: 20px;
+  overflow: hidden; /* 내부 스크롤 제어 */
 }
 
-.terminal-error-page h2 {
-  color: var(--danger-color);
-  margin-bottom: 20px;
-}
-
-.terminal-error-page p {
-  margin-bottom: 30px;
-  color: var(--text-secondary);
-}
-
-.terminal-error-page button {
-  padding: 12px 25px;
-  cursor: pointer;
-  background-color: var(--accent-mauve);
-  color: var(--bg-dark);
-  border: none;
+/* 1. 터미널 창 영역 */
+.terminal-bash-wrapper {
+  flex: 1; /* 가능한 공간 최대한 차지 (가장 중요) */
+  background-color: #000;
   border-radius: 8px;
-  font-weight: bold;
-  transition: background-color 0.2s ease;
+  border: 1px solid #333;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
-.terminal-error-page button:hover {
-  background-color: #e7c7ff; /* 더 밝은 보라색 */
+/* 2. 상태창 영역 (하단 고정 느낌) */
+.terminal-status-wrapper {
+  flex-shrink: 0; /* 내용물 크기만큼만 차지 */
+  background-color: #252526;
+  padding: 15px 20px;
+  border-radius: 8px;
+  border: 1px solid #333;
+}
+
+.status-header {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #aaa;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 1. 배경을 어둡게 깔고 화면 전체를 덮는 오버레이 */
+.custom-modal-overlay {
+  position: fixed;      /* 화면 스크롤과 상관없이 고정 */
+  top: 0;
+  left: 0;
+  width: 100vw;         /* 화면 너비 꽉 채움 */
+  height: 100vh;        /* 화면 높이 꽉 채움 */
+  background-color: rgba(0, 0, 0, 0.7); /* 배경을 반투명 검정으로 */
+  display: flex;        /* 내부 내용물 정렬을 위해 Flex 사용 */
+  align-items: center;  /* 수직 중앙 정렬 */
+  justify-content: center; /* 수평 중앙 정렬 */
+  z-index: 9999;        /* 다른 모든 요소보다 위에 뜨도록 설정 */
+  backdrop-filter: blur(3px); /* 배경을 흐릿하게 처리 (고급 효과) */
+}
+
+/* 2. 실제 모달 창 디자인 */
+.custom-modal-content {
+  background-color: #252526; /* 터미널 헤더와 색상 통일 */
+  padding: 30px;
+  border-radius: 12px;
+  border: 1px solid #444;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* 그림자로 붕 떠있는 느낌 */
+  text-align: center;
+  min-width: 320px;
+  animation: popIn 0.3s ease; /* 뿅! 하고 나타나는 애니메이션 */
+}
+
+/* 제목 스타일 */
+.custom-modal-content h3 {
+  color: #fff;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+/* 설명 텍스트 스타일 */
+.custom-modal-content p {
+  color: #ccc;
+  font-size: 1rem;
+  margin-bottom: 25px;
+  line-height: 1.5;
+}
+
+/* 버튼들을 감싸는 영역 */
+.custom-modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+/* 공통 버튼 스타일 */
+.modal-btn {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+/* 취소 버튼 */
+.modal-btn.cancel {
+  background-color: #444;
+  color: #fff;
+}
+.modal-btn.cancel:hover {
+  background-color: #555;
+}
+
+/* 종료하기 버튼 (빨간색) */
+.modal-btn.confirm {
+  background-color: #d32f2f;
+  color: #fff;
+}
+.modal-btn.confirm:hover {
+  background-color: #b71c1c;
+  transform: translateY(-2px);
+}
+
+/* 팝업 애니메이션 정의 */
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
 }

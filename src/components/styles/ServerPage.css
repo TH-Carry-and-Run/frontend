@@ -1,261 +1,185 @@
-/* --- 기본 및 전체 레이아웃 --- */
+/* --- 변수 및 공통 설정 (MainPage와 동일한 테마 유지) --- */
 :root {
-  --primary-blue: #4a6cf8;
-  --primary-dark-blue: #3b57e0;
-  --bg-color: #f8f9fa;
-  --sidebar-bg: #ffffff;
-  --card-bg: #ffffff;
-  --border-color: #e9ecef;
+  --primary-blue: #007bff;
+  --primary-dark-blue: #0056b3;
+  --light-gray-bg: #f8f9fa;
   --text-dark: #212529;
-  --text-light: #6c757d;
-  --status-running: #28a745;
-  --status-stopped: #dc3545;
-  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --text-light: #495057;
+  --border-color: #dee2e6;
+  --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
+  --success-green: #28a745; /* 서버 상태 표시용 추가 */
+  --danger-red: #dc3545;    /* 삭제 버튼용 추가 */
 }
 
-.server-dashboard {
+/* --- 페이지 레이아웃 --- */
+.server-page-root {
+  min-height: 100vh;
+  background-color: var(--light-gray-bg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.server-page-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 100px 20px 40px; /* Navbar 높이 고려 + 여백 */
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+/* --- 헤더 영역 (타이틀 + 생성 버튼) --- */
+.server-page-header {
   display: flex;
-  height: 100vh;
-  background-color: var(--bg-color);
-  font-family: 'Pretendard', sans-serif;
+  justify-content: space-between;
+  align-items: flex-end; /* 텍스트 베이스라인에 맞춤 */
+  margin-bottom: 40px;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 20px;
 }
 
-/* --- 1. 왼쪽 사이드바 --- */
-.sidebar {
-  width: 260px;
-  background-color: var(--sidebar-bg);
-  border-right: 1px solid var(--border-color);
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  flex-shrink: 0;
+.server-page-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  margin: 0 0 10px 0;
 }
 
-.sidebar-header .logo {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: var(--primary-blue);
-  margin-bottom: 30px;
-}
-
-.user-profile {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 30px;
-}
-.user-profile .username {
+.server-page-subtitle {
   font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--text-dark);
-}
-.user-profile .email {
-  font-size: 0.9rem;
   color: var(--text-light);
+  margin: 0;
 }
 
-.sidebar-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 30px;
-}
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 15px;
-  border-radius: 8px;
-  color: var(--text-light);
-  text-decoration: none;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-.nav-item:hover {
-  background-color: #e9ecef;
-  color: var(--text-dark);
-}
-.nav-item.active {
+/* --- 버튼 스타일 (MainPage .hero-button 계승) --- */
+.server-page-create-btn {
   background-color: var(--primary-blue);
   color: white;
-  box-shadow: 0 4px 10px rgba(74, 108, 248, 0.3);
-}
-
-.server-status-summary {
-  margin-top: auto; /* 사이드바 하단에 고정 */
-  background-color: var(--bg-color);
-  padding: 15px;
-  border-radius: 8px;
-}
-.status-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.9rem;
-  color: var(--text-light);
-}
-.status-item:not(:last-child) { margin-bottom: 10px; }
-.status-item .count {
-  font-weight: 700;
-  color: var(--text-dark);
-  background-color: #e9ecef;
-  padding: 2px 8px;
-  border-radius: 5px;
-}
-.status-item .count.running {
-  color: var(--status-running);
-}
-
-/* --- 2. 메인 콘텐츠 --- */
-.main-content {
-  flex-grow: 1;
-  padding: 30px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-}
-
-.main-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
-}
-.main-header h2 {
-  font-size: 2rem;
-  color: var(--text-dark);
-}
-.create-server-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
   border: none;
-  border-radius: 8px;
-  background-color: var(--primary-blue);
-  color: white;
+  border-radius: 50px;
+  padding: 12px 30px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 8px; /* 아이콘이 있다면 간격 벌림 */
 }
-.create-server-btn:hover {
+
+.server-page-create-btn:hover {
   background-color: var(--primary-dark-blue);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(74, 108, 248, 0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
 }
 
-.server-list-container {
-  flex-grow: 1;
+/* --- 리스트 섹션 --- */
+.server-page-list-section {
+  position: relative;
+  min-height: 200px;
 }
 
-/* 서버가 없을 때 카드 */
-.no-servers-card {
-  border: 2px dashed var(--border-color);
+/* --- Empty State (서버가 없을 때) --- */
+.server-empty-card {
+  background-color: #fff;
+  border: 1px dashed var(--border-color); /* 점선으로 빈 공간 강조 */
   border-radius: 12px;
+  padding: 60px 20px;
+  text-align: center;
+  box-shadow: var(--card-shadow);
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  text-align: center;
-  padding: 50px;
-  height: 300px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-.no-servers-card:hover {
-  border-color: var(--primary-blue);
-  background-color: #fdfdff;
-}
-.no-servers-card .plus-icon {
-  font-size: 3rem;
-  color: var(--primary-blue);
-  margin-bottom: 20px;
-}
-.no-servers-card p {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--text-dark);
-  margin: 0 0 10px;
-}
-.no-servers-card span {
-  color: var(--text-light);
+  justify-content: center;
+  animation: fadeInUp 0.5s ease-out;
 }
 
-/* 서버 목록 그리드 */
-.server-grid {
+.server-empty-card p {
+  font-size: 1.25rem;
+  color: var(--text-light);
+  margin-bottom: 25px;
+}
+
+.server-empty-create-btn {
+  background-color: white;
+  color: var(--primary-blue);
+  border: 2px solid var(--primary-blue);
+  border-radius: 50px;
+  padding: 12px 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.server-empty-create-btn:hover {
+  background-color: var(--primary-blue);
+  color: white;
+}
+
+/* --- 로딩 화면 --- */
+.server-page-loading {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: var(--light-gray-bg);
+}
+
+.server-page-loading-body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--primary-blue);
+  animation: pulse 1.5s infinite;
+}
+
+/* --- 애니메이션 정의 --- */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+/* [참고] ServerList 컴포넌트 내부의 카드 스타일 제안 
+  ServerList.jsx 내부의 className이 아래와 같다고 가정하거나,
+  ServerList 컴포넌트의 CSS를 수정할 때 참고하세요.
+*/
+.server-card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 25px;
 }
 
-/* 개별 서버 카드 */
 .server-card {
-  background-color: var(--card-bg);
+  background-color: #fff;
   border-radius: 12px;
+  border: 1px solid var(--border-color);
+  padding: 25px;
   box-shadow: var(--card-shadow);
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
+
 .server-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary-blue);
 }
-
-.card-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-.status-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: var(--text-light);
-}
-.status-dot.running { background-color: var(--status-running); }
-.status-dot.stopped { background-color: var(--status-stopped); }
-
-.server-name {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--text-dark);
-}
-
-.server-details {
-  margin-bottom: 20px;
-  font-size: 0.9rem;
-  color: var(--text-light);
-}
-.server-details p { margin: 5px 0; }
-.status-text.running { color: var(--status-running); font-weight: 600; }
-.status-text.stopped { color: var(--status-stopped); font-weight: 600; }
-
-.card-actions {
-  margin-top: auto;
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
-.action-btn {
-  background: none;
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  padding: 8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-}
-.action-btn:hover {
-  border-color: var(--text-dark);
-}
-.action-btn.delete { color: var(--status-stopped); }
-.action-btn.delete:hover { background-color: var(--status-stopped); color: white; }
-.action-btn.start { color: var(--status-running); }
-.action-btn.start:hover { background-color: var(--status-running); color: white; }
-.action-btn.stop { color: #f0ad4e; }
-.action-btn.stop:hover { background-color: #f0ad4e; color: white; }

@@ -1,37 +1,59 @@
+/* Toast 알림창 스타일 */
 .custom-toast {
   position: fixed;
   top: 50px;
   left: 50%;
-  transform: translateX(-50%);
-  min-width: 240px;
+  transform: translateX(-50%); /* 화면 가운데 정렬 */
+  min-width: 320px;            /* 너비 살짝 키움 */
   max-width: 80vw;
-  color: #fff;
-  padding: 16px 32px;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.13);
+
+  /* ✨ 배경색을 '흰색'으로 강제 지정 (가장 중요!) */
+  background-color: #ffffff !important;
+  
+  /* 글자색 (진한 파란색) */
+  color: #0f23bb !important;
+
+  /* 테두리와 안쪽 여백 */
+  padding: 18px 30px;
+  border-radius: 50px; /* 둥근 알약 모양 */
+  
+  /* 테두리 선 추가 (선명하게 보이도록) */
+  border: 2px solid #0f23bb;
+
+  /* 그림자 (어두운 배경 위에서 붕 떠보이게) */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+
+  /* 폰트 설정 */
   font-size: 1.1rem;
+  font-weight: 800; /* 글자 두껍게 */
+  text-align: center;
+  
+  /* 항상 맨 위에 뜨도록 설정 */
   z-index: 10000;
-  animation: fadein 0.4s, fadeout 0.5s 2.2s;
+  
+  /* 애니메이션 */
+  animation: slideDown 0.4s ease-out, fadeOut 0.5s ease-in 2.5s forwards;
 }
 
-/* --- 타입별 색상 추가 --- */
-.custom-toast.info {
-  background: rgba(50, 50, 50, 0.98);
+/* 위에서 아래로 내려오는 애니메이션 */
+@keyframes slideDown {
+  from {
+    top: -50px;
+    opacity: 0;
+  }
+  to {
+    top: 50px;
+    opacity: 1;
+  }
 }
 
-.custom-toast.warning {
-  background: rgba(236, 152, 0, 0.98); /* 경고 (주황색 계열) */
-}
-
-.custom-toast.error {
-  background: rgba(220, 53, 69, 0.98); /* 에러 (붉은색 계열) */
-}
-
-@keyframes fadein {
-  from { opacity: 0; top: 30px;}
-  to { opacity: 1; top: 50px;}
-}
-@keyframes fadeout {
-  from { opacity: 1;}
-  to { opacity: 0;}
+/* 서서히 사라지는 애니메이션 */
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
 }

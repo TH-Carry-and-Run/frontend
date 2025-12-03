@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 import { BACKEND_URL } from "../config";
-console.log("✅ Axios Base URL:", BACKEND_URL);
+console.log("Axios Base URL:", BACKEND_URL);
 
 
 const axiosInstance = axios.create({
@@ -46,18 +46,3 @@ axiosInstance.interceptors.response.use(
 );
 
 export default axiosInstance;
-
-// (선택) 로그아웃 헬퍼: 필요하면 import해서 사용
-// export const logout = async () => {
-//   try {
-//     await axiosInstance.post('/api/auth/logout');
-//   } catch (e) {
-//     // 서버가 세션 정리 실패하더라도 클라이언트 상태는 정리
-//     console.warn('Logout API failed, clearing local state anyway.', e);
-//   } finally {
-//     localStorage.removeItem('accessToken');
-//     localStorage.removeItem('accessTokenExpiresAt');
-//     localStorage.removeItem('currentUser');
-//     window.location.href = '/login';
-//   }
-// };

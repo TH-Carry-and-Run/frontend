@@ -6,3 +6,23 @@
     font-weight: 600;
     font-size: 0.9rem;
   }
+  /* --- 위치 수정 코드 추가 --- */
+.post-list-page-container {
+  /* Navbar 높이(약 60~80px)보다 더 넉넉하게 여백을 줍니다. */
+  padding-top: 120px !important; 
+  
+  /* (선택사항) 화면 높이가 길어져도 자연스럽게 보이도록 설정 */
+  min-height: 100vh;
+  padding-bottom: 50px;
+}
+
+
+/* --- 기존 코드 유지 --- */
+.post-list-table-header {
+  background-color: #f8f9fa;
+}
+
+.post-list-table-header .MuiTableCell-root {
+  font-weight: 600;
+  font-size: 0.9rem;
+}

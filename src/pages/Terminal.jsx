@@ -1,119 +1,103 @@
-// import React, { useState } from "react";
-// // import { useLocation, useNavigate } from "react-router-dom"; // 임시 테스트 중에는 사용 안 함
-// import TerminalSidebar from "../components/Terminal/TerminalSidebar.jsx";
-// import TerminalBash from "../components/Terminal/TerminalBash.jsx";
-// import TerminalStatus from "../components/Terminal/TerminalStatus.jsx";
-// import "../components/Terminal/Terminal.css"; // styles 폴더에 있다고 가정
-
-// const Terminal = ({ showToast }) => {
-//     // const location = useLocation();
-//     // const navigate = useNavigate();
-
-//     // --- 임시 테스트를 위해 고정된 값을 직접 사용합니다 ---
-//     const presignedUrl = 'eyJzdWIiOiJoZXlfbWluakBuYXZlci5jb20iLCJwb2ROYW1lIjoicG9kLTM5ZTMwNzlmIiwicG9kTmFtZXNwYWNlIjoiZGVmYXVsdCIsImluZ3Jlc3MiOiJ0Y2FyLmFkbWluLmNvbm5lY3Rpb24uY29tL2RlZmF1bHQvcG9kLTM5ZTMwNzlmIn0'; // VM팀원이 준 임시 토큰(presignedUrl)
-//     const podName = 'pod-39e3079f';       // 임시 podName
-//     const podNamespace = 'default';     // 임시 podNamespace
-
-//     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
-//     const toggleSidebar = () => {
-//         setIsSidebarOpen(!isSidebarOpen);
-//     };
-
-//     // --- URL 유효성 검사 로직을 완전히 제거합니다 ---
-//     // if (!presignedUrl || !podName || !podNamespace) { ... } // 이 부분을 삭제!
-
-//     // --- 무조건 터미널 페이지를 렌더링합니다 ---
-//     return (
-//         <div className="terminal-page-layout">
-//             <header className="terminal-header">
-//                 <div className="logo">TCAR</div>
-//                 <div className="header-actions"></div>
-//             </header>
-            
-//             <div className="terminal-main-content">
-//                 <TerminalSidebar isOpen={isSidebarOpen} onToggle={toggleSidebar} />
-//                 <main className="terminal-body">
-//                     <div className="terminal-bash-wrapper">
-//                         {/* --- 임시 값을 자식 컴포넌트로 전달합니다 --- */}
-//                         <TerminalBash 
-//                             showToast={showToast} 
-//                             presignedUrl={presignedUrl} 
-//                             podName={podName}
-//                             podNamespace={podNamespace}
-//                         />
-//                     </div>
-//                     <div className="terminal-status-wrapper">
-//                         <h2 className="management-title">Management</h2>
-//                         {/* --- 임시 값을 TerminalStatus로 전달합니다 --- */}
-//                         <TerminalStatus 
-//                             podName={podName} 
-//                             podNamespace={podNamespace} 
-//                         />
-//                     </div>
-//                 </main>
-//             </div>
-//         </div>
-//     );
-// };
-
-// export default Terminal;
-
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import TerminalSidebar from "../components/Terminal/TerminalSidebar.jsx";
+import { FaSignOutAlt, FaServer, FaMicrochip } from "react-icons/fa"; 
 import TerminalBash from "../components/Terminal/TerminalBash.jsx";
 import TerminalStatus from "../components/Terminal/TerminalStatus.jsx";
 import "../components/Terminal/Terminal.css";
 
 const Terminal = ({ showToast }) => {
-    const location = useLocation();
-    const navigate = useNavigate();
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  // 모달 표시 여부 상태 관리
+  const [showExitModal, setShowExitModal] = useState(false);
 
-    // 🚀 CreateServer에서 전달된 state 가져오기
-    const { presignedUrl, podName, podNamespace } = location.state || {};
+  const { presignedUrl, podName, podNamespace } = location.state || {};
 
-    useEffect(() => {
-        if (!presignedUrl || !podName || !podNamespace) {
-            showToast("터미널 접속 정보가 없습니다. 서버 페이지로 이동합니다.", "warning");
-            navigate("/serverpage");
-        }
-    }, [presignedUrl, podName, podNamespace, navigate, showToast]);
+  useEffect(() => {
+    if (!presignedUrl) {
+      showToast?.("터미널 접속 정보가 없습니다. 서버 페이지로 이동합니다.", "warning");
+      navigate("/serverpage");
+    }
+  }, [presignedUrl, navigate, showToast]);
 
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-    const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+  // [수정] EXIT 버튼 클릭 시 -> 모달 열기
+  const handleExitClick = () => {
+    setShowExitModal(true);
+  };
 
-    if (!presignedUrl) return null; // state 체크하는 동안 렌더링 지연
+  // [수정] 모달에서 '네(Yes)' 클릭 시 -> 실제 이동
+  const confirmExit = () => {
+    setShowExitModal(false); // 모달 닫기
+    showToast?.("터미널 연결을 종료했습니다.", "info"); // Toast 띄우기
+    navigate("/serverpage");
+  };
 
-    return (
-        <div className="terminal-page-layout">
-            <header className="terminal-header">
-                <div className="logo">TCAR</div>
-                <div className="header-actions"></div>
-            </header>
+  // [수정] 모달에서 '취소(No)' 클릭 시 -> 모달 닫기
+  const cancelExit = () => {
+    setShowExitModal(false);
+  };
 
-            <div className="terminal-main-content">
-                <TerminalSidebar isOpen={isSidebarOpen} onToggle={toggleSidebar} />
-                <main className="terminal-body">
-                    <div className="terminal-bash-wrapper">
-                        <TerminalBash
-                            showToast={showToast}
-                            presignedUrl={presignedUrl}
-                            podName={podName}
-                            podNamespace={podNamespace}
-                        />
-                    </div>
-                    <div className="terminal-status-wrapper">
-                        <h2 className="management-title">Management</h2>
-                        <TerminalStatus 
-                            podName={podName}
-                            podNamespace={podNamespace}
-                        />
-                    </div>
-                </main>
-            </div>
+  if (!presignedUrl) return <div className="loading-screen">Connecting...</div>;
+
+  return (
+    <div className="terminal-page-layout">
+      {/* 헤더 */}
+      <header className="terminal-header">
+        <div className="header-left">
+          <div className="logo">TCAR</div>
+          <div className="server-info-badge">
+            <FaServer />
+            <span>{podName || "Unknown Server"}</span>
+          </div>
         </div>
-    );
+
+        <div className="header-right">
+          {/* 버튼 클릭 시 handleExitClick 실행 */}
+          <button className="exit-btn" onClick={handleExitClick}>
+            <FaSignOutAlt />
+            <span>EXIT</span>
+          </button>
+        </div>
+      </header>
+
+      {/* 메인 컨텐츠 */}
+      <div className="terminal-main-content">
+        <div className="terminal-bash-wrapper">
+          <TerminalBash
+            showToast={showToast}
+            presignedUrl={presignedUrl}
+            podName={podName}
+            podNamespace={podNamespace}
+          />
+        </div>
+
+        <div className="terminal-status-wrapper">
+          <div className="status-header">
+            <FaMicrochip /> Management Status
+          </div>
+          <TerminalStatus
+            podName={podName}
+            podNamespace={podNamespace}
+          />
+        </div>
+      </div>
+
+      {/* ✨ [추가] 종료 확인 커스텀 모달 ✨ */}
+      {showExitModal && (
+        <div className="custom-modal-overlay">
+          <div className="custom-modal-content">
+            <h3>터미널 종료</h3>
+            <p>터미널 연결을 종료하시겠습니까?<br />(작업 내용은 자동 저장됩니다.)</p>
+            <div className="custom-modal-actions">
+              <button className="modal-btn cancel" onClick={cancelExit}>취소</button>
+              <button className="modal-btn confirm" onClick={confirmExit}>종료하기</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default Terminal;
