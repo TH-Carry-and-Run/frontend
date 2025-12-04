@@ -3,26 +3,24 @@ import { Terminal } from "@xterm/xterm";
 import "@xterm/xterm/css/xterm.css";
 import { FitAddon } from 'xterm-addon-fit';
 import axios from 'axios';
-import { VM_URL } from '../../config';
+// import { VM_URL } from '../../config'; // presignedUrl을 직접 쓰면 VM_URL import도 필요 없습니다.
 import './TerminalBash.css';
 
-// props는 그대로 받되, 지금은 테스트 편의를 위해 내부 상수 사용
 const TerminalBash = ({ showToast, presignedUrl, podName, podNamespace }) => {
   const terminalRef = useRef(null);
   const socketRef = useRef(null);
   const termRef = useRef(null);
   const fitAddon = useRef(new FitAddon());
 
-  const TOKEN =
-    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwicG9kTmFtZSI6InBvZC05MmY5ZGNmYSIsInBvZE5hbWVzcGFjZSI6ImRlZmF1bHQiLCJpbmdyZXNzIjoidGNhci5hZG1pbi5jb25uZWN0aW9uLmNvbS9kZWZhdWx0L3BvZC05MmY5ZGNmYSJ9.XAITeBWU3txa9_YQFzNioYAjdACA977SMux65MePWbM';
-  const POD_NAME = 'pod-92f9dcfa';
-  const POD_NAMESPACE = 'default';
-
-  // const TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwicG9kTmFtZSI6InBvZC0zNGFjNzliOSIsInBvZE5hbWVzcGFjZSI6ImRlZmF1bHQiLCJpbmdyZXNzIjoidGNhci5hZG1pbi5jb25uZWN0aW9uLmNvbS9kZWZhdWx0L3BvZC0zNGFjNzliOSIsImlhdCI6MTc2MTU3NDYyNywiZXhwIjoxNzYxNTc0OTI3fQ.g7jamWQGICjMOKVEZqrS_GsOHRXGiGmVXkp-p8hUwsY';
-  // const POD_NAME = 'pod-34ac79b9';
-  // const POD_NAMESPACE = 'default';
+  // ❌ [삭제] 하드코딩된 상수들은 이제 필요 없습니다.
+  // const TOKEN = '...'; 
+  // const POD_NAME = '...';
+  // const POD_NAMESPACE = '...';
 
   useEffect(() => {
+    // presignedUrl이 없으면 실행하지 않음 (방어 코드)
+    if (!presignedUrl) return;
+
     let isMounted = true;
     let resizeListener = null;
     let initialFitTimer = null;
@@ -46,6 +44,7 @@ const TerminalBash = ({ showToast, presignedUrl, podName, podNamespace }) => {
     requestAnimationFrame(() => {
       if (!isMounted || !terminalRef.current) return;
       term.open(terminalRef.current);
+      
       const fit = () => {
         if (!isMounted) return;
         try {
@@ -56,31 +55,27 @@ const TerminalBash = ({ showToast, presignedUrl, podName, podNamespace }) => {
       resizeListener = fit;
       window.addEventListener('resize', resizeListener);
 
-      // 키 입력 → WS
+      // 키 입력 → WS 전송
       term.onData((data) => {
         if (socketRef.current?.readyState === WebSocket.OPEN) {
-          // 엔터 정규화(환경 따라 \n만 들어오는 경우 보정)
+          // 엔터 처리 보정
           const out = (data === '\n' || data === '\r') ? '\r' : data;
           socketRef.current.send(out);
         }
       });
 
-      // 2) presigned 검증 → WS URL 획득 → 연결
-      connectWebSocket(term);
+      // 2) 웹소켓 연결 시작 (props로 받은 URL 사용)
+      connectWebSocket(term, presignedUrl);
     });
 
-    const connectWebSocket = async (termInstance) => {
+    const connectWebSocket = async (termInstance, urlToValidate) => {
       try {
-        const validateUrl = `${VM_URL}/api/access/presigned/validate`;
-        const res = await axios.get(validateUrl, {
-          params: {
-            token: TOKEN,
-            podName: POD_NAME,
-            podNamespace: POD_NAMESPACE,
-          },
-        });
+        // ✨ [핵심 수정] 
+        // 기존: axios.get(VM_URL + '...', { params: { token: TOKEN ... } })
+        // 수정: 백엔드가 준 전체 URL(토큰 포함됨)을 그대로 호출
+        const res = await axios.get(urlToValidate);
 
-        // 백엔드가 문자열 또는 {wsUrl|url}로 줄 수 있음
+        // 응답 처리
         const raw = res.data;
         let wsUrl =
           (typeof raw === 'string' && raw) ||
@@ -91,11 +86,11 @@ const TerminalBash = ({ showToast, presignedUrl, podName, podNamespace }) => {
           throw new Error('검증 응답에 WebSocket URL이 없습니다.');
         }
 
-        // http(s) → ws(s) 안전 변경
+        // http(s) -> ws(s) 프로토콜 변환
         if (wsUrl.startsWith('http://')) wsUrl = wsUrl.replace('http://', 'ws://');
         if (wsUrl.startsWith('https://')) wsUrl = wsUrl.replace('https://', 'wss://');
 
-        // 실제 연결
+        // WebSocket 연결
         const ws = new WebSocket(wsUrl);
         socketRef.current = ws;
 
@@ -127,7 +122,7 @@ const TerminalBash = ({ showToast, presignedUrl, podName, podNamespace }) => {
                 write(obj.message ?? '');
             }
           } catch {
-            // 순수 텍스트
+            // 일반 텍스트 처리
             termInstance.write(String(event.data).replace(/\n(?!\r)/g, '\n\r'));
           }
         };
@@ -150,7 +145,7 @@ const TerminalBash = ({ showToast, presignedUrl, podName, podNamespace }) => {
       }
     };
 
-    // 3) 정리
+    // 3) 정리 (Cleanup)
     return () => {
       isMounted = false;
       if (resizeListener) window.removeEventListener('resize', resizeListener);
@@ -162,7 +157,7 @@ const TerminalBash = ({ showToast, presignedUrl, podName, podNamespace }) => {
       socketRef.current = null;
       termRef.current = null;
     };
-  }, []);
+  }, [presignedUrl]); // presignedUrl이 바뀔 때만 재실행
 
   return (
     <div
@@ -172,4 +167,5 @@ const TerminalBash = ({ showToast, presignedUrl, podName, podNamespace }) => {
     />
   );  
 };
+
 export default TerminalBash;

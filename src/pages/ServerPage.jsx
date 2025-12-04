@@ -20,7 +20,6 @@ const ServerPage = ({ showToast }) => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        // 유저 정보 복구
         const storedUser = localStorage.getItem("currentUser");
         if (storedUser) {
           setUser(JSON.parse(storedUser));
@@ -28,15 +27,11 @@ const ServerPage = ({ showToast }) => {
 
         // 서버 목록 조회
         const serversRes = await axiosInstance.get("/api/container/pods");    
-        console.log("서버 목록 응답 데이터:", serversRes.data);
         const fetchedData = serversRes.data;
-
-        // 혹시 모르니 배열인지 확인하고 넣기 (아니면 빈 배열)
         setServers(Array.isArray(fetchedData) ? fetchedData : []);
 
       } catch (err) {
         console.error("[ServerPage] fetch error", err);
-        // 401 에러(로그인 만료)일 경우 처리가 필요할 수 있습니다.
         showToast?.("데이터를 불러오는 데 실패했습니다.", "error");
       } finally {
         setIsLoading(false);
@@ -63,23 +58,38 @@ const ServerPage = ({ showToast }) => {
   const handleDeleteSuccess = (podNamespace, podName) => {
     setServers((prev) =>
       prev.filter(
-        (s) => s.podNamespace !== podNamespace || s.podName !== podName
+        (s) => (s.podNamespace || s.namespace) !== podNamespace || s.podName !== podName
       )
     );
     handleCloseDeleteModal();
   };
 
+  // --- 🛠️ [핵심 수정] 접속하기 버튼 클릭 로직 ---
   const handleAccessServer = async (server) => {
     try {
       showToast?.("터미널 접속 정보를 요청 중입니다…", "info");
 
-      // 터미널 접속 토큰 발급
-      const res = await axiosInstance.post("/api/container/presign", {
-        podName: server.podName,
-        podNamespace: server.podNamespace,
-      });
+      // 1. 네임스페이스 추출
+      const targetNamespace = server.podNamespace || server.namespace || "default";
 
-      // 응답에서 url 추출
+      // 2. [중요] API 명세서(image_ac7227.png)에 있는 '모든 필드'를 채워서 보냅니다.
+      // 값이 없으면 빈 문자열("")이나 기본값을 넣어줘야 400 에러가 안 납니다.
+      const requestBody = {
+        podNamespace: targetNamespace,
+        podName: server.podName,
+        ingressURL: server.ingressUrl || "",        // 명세서: ingressURL
+        OS: server.os || "Ubuntu 22.04",            // 명세서: OS
+        Version: server.version || "Latest",        // 명세서: Version
+        Created: server.createdAt || server.created || "", // 명세서: Created
+        ServerName: server.serverName || server.podName // 명세서: ServerName
+      };
+
+      console.log("접속 요청 데이터(Payload):", requestBody);
+
+      // 3. POST 요청 전송
+      const res = await axiosInstance.post("/api/container/presign", requestBody);
+
+      // 4. 응답에서 URL 추출
       const preSignedUrl =
         res.data?.preSignedUrl || res.data?.presignedUrl || res.data?.url;
 
@@ -87,16 +97,18 @@ const ServerPage = ({ showToast }) => {
         throw new Error("preSignedUrl을 받지 못했습니다.");
       }
 
+      // 5. 터미널로 이동
       navigate("/terminal", {
         state: {
           presignedUrl: preSignedUrl,
           podName: server.podName,
-          podNamespace: server.podNamespace,
+          podNamespace: targetNamespace,
         },
       });
     } catch (err) {
-      console.error("[ServerPage] handleAccessServer error", err);
-      showToast?.("터미널 접속 정보를 가져오지 못했습니다.", "error");
+      console.error("[ServerPage] 접속 요청 실패:", err);
+      const errMsg = err.response?.data?.message || "터미널 접속 정보를 가져오지 못했습니다.";
+      showToast?.(errMsg, "error");
     }
   };
 
@@ -130,9 +142,6 @@ const ServerPage = ({ showToast }) => {
         </header>
 
         <section className="server-page-list-section">
-          {/* 데이터가 비어있어도 ServerList를 렌더링해야 
-            ServerList 내부의 '+' 버튼(새 서버 생성 카드)이 보입니다.
-          */}
           <ServerList
             servers={servers}
             onDelete={handleOpenDeleteModal}
@@ -144,7 +153,6 @@ const ServerPage = ({ showToast }) => {
       {showDeleteModal && deleteTarget && (
         <DeleteServer
           podNamespace={deleteTarget.podNamespace || deleteTarget.namespace} 
-          
           podName={deleteTarget.podName}
           onClose={handleCloseDeleteModal}
           onDeleteSuccess={handleDeleteSuccess}
